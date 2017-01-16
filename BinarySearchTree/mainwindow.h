@@ -21,6 +21,7 @@ public:
 private:
     Ui::MainWindow *ui;
     BinarySearchTree<int> bst;
+    double scale;
 };
 
 #endif // MAINWINDOW_H

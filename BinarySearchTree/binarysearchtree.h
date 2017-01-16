@@ -45,9 +45,10 @@ public:
     int getTreeHeight() const;
     bool deleteItem(T);
     bool find(T) const;
-    void draw(QPainter *painter, int width) const;
+    void draw(QPainter *painter, int width, double &scale);
 private:
     Node<T> *root;
+    double scale;
     int max(int a, int b) const;
     void recursivePreOrder(const Node<T> *) const;
     void recursiveInOrder(const Node<T> *) const;
@@ -75,7 +76,7 @@ int BinarySearchTree<T>::max(int a, int b) const
 
 template<typename T>
 BinarySearchTree<T>::BinarySearchTree() :
-        root(0)
+        root(0), scale(1)
 {
 
 }
@@ -420,11 +421,11 @@ void BinarySearchTree<T>::recursiveDeleteNodes(const Node<T> *node)
 }
 
 template<typename T>
-void BinarySearchTree<T>::draw(QPainter *painter, int width) const
+void BinarySearchTree<T>::draw(QPainter *painter, int width, double &scale)
 {
 
-    painter->setFont(QFont("Times", 12, QFont::Normal));
-
+    painter->setFont(QFont("Times", 12 * scale, QFont::Normal));
+    this->scale = scale;
     this->recursiveDraw(root, width/2, 30, getTreeHeight(), painter);
 
     return;
@@ -444,7 +445,7 @@ void BinarySearchTree<T>::recursiveDraw(const Node<T> *node, int x, int y, int h
         hvar = std::pow(2, height - 1);
 
     // Radius of the node's circle
-    int nodeRadius = 20;
+    int nodeRadius = 20 * scale;
 
     // The amount of pixels between two nodes which share the same parent.
     // Basically, this value is the amount of pixels from the center of

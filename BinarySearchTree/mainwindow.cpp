@@ -3,7 +3,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), bst()
+    ui(new Ui::MainWindow), bst(),
+    scale(1.0)
 {
 
     int height = 5;
@@ -46,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
         break;
     }
-
+    this->scale = 0.7;
     ui->setupUi(this);
 
 }
@@ -75,6 +76,6 @@ void MainWindow::paintEvent(QPaintEvent *)
     brush.setStyle(Qt::SolidPattern);
     painter.setBrush(brush);
 
-    bst.draw(&painter, ui->centralWidget->width());
+    bst.draw(&painter, ui->centralWidget->width(), scale);
 }
 
