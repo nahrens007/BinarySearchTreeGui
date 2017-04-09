@@ -3,8 +3,9 @@
 
 #include <QMainWindow>
 #include <QWidget>
+#include <QMenuBar>
 #include "renderarea.h"
-#include <QTabWidget>
+#include "bst_properties_window.h"
 
 class MainWindow : public QMainWindow
 {
@@ -16,8 +17,12 @@ public:
     ~MainWindow();
 
 private:
-    QTabWidget *tabWidget;
     RenderArea *renderArea;
+    BST_Properties_Window *prop;
+    QMenuBar *menuBar;
+
+protected:
+    virtual void closeEvent(QCloseEvent *event);
 };
 
 #endif // MAINWINDOW_H

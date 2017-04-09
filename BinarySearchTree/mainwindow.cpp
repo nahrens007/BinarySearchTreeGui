@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include <QHBoxLayout>
+#include <QCloseEvent>
+#include <QMenuBar>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -11,21 +13,29 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setCentralWidget(centralWidget);
 
     renderArea = new RenderArea;
-    tabWidget = new QTabWidget;
 
-    tabWidget->addTab(renderArea, tr("Tree"));
-    tabWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     QHBoxLayout *mainLayout = new QHBoxLayout;
-    mainLayout->addWidget(tabWidget);
+    mainLayout->addWidget(renderArea);
     centralWidget->setLayout(mainLayout);
 
     setWindowTitle(tr("Binary Search Tree"));
+
+    menuBar = new QMenuBar();
+
+    prop = new BST_Properties_Window();
+    prop->create();
+
 }
 
 MainWindow::~MainWindow()
 {
-    delete centralWidget;
+    delete prop;
     delete renderArea;
-    delete tabWidget;
+    delete centralWidget;
+
 }
 
+void MainWindow::closeEvent(QCloseEvent *event){
+    prop->close();
+    event->accept();
+}
