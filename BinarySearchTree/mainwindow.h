@@ -2,26 +2,22 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QPainter>
-#include "binarysearchtree.h"
-
-namespace Ui {
-class MainWindow;
-}
+#include <QWidget>
+#include "renderarea.h"
+#include <QTabWidget>
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    QWidget *centralWidget;
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    virtual void paintEvent(QPaintEvent *event);
 
 private:
-    Ui::MainWindow *ui;
-    BinarySearchTree<int> bst;
-    double scale;
+    QTabWidget *tabWidget;
+    RenderArea *renderArea;
 };
 
 #endif // MAINWINDOW_H

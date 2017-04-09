@@ -13,11 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    renderarea.cpp
 
 HEADERS  += mainwindow.h \
     binarysearchtree.h \
     list.h \
-    queue.h
+    queue.h \
+    renderarea.h
 
-FORMS    += mainwindow.ui
+FORMS    +=
