@@ -5,7 +5,7 @@
 RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
     scale(1.0)
 {
-    int height = 2;
+    int height = 5;
 
     switch(height){
     case 1:{
@@ -63,17 +63,9 @@ QSize RenderArea::minimumSizeHint() const
 void RenderArea::paintEvent(QPaintEvent * /* event */)
 {
 
-    QString txt = "Height: " + QString::number(bst.getTreeHeight());
     QPainter painter(this);
 
     painter.setRenderHint(QPainter::Antialiasing);
-
-    QPen pen;
-
-    pen.setWidth(2);
-    painter.setPen(pen);
-    painter.setFont(QFont("Times", 12, QFont::Normal));
-    painter.drawText(QPoint(0, 30), txt);
 
     QBrush brush;
     brush.setColor(Qt::red);
@@ -81,8 +73,6 @@ void RenderArea::paintEvent(QPaintEvent * /* event */)
     painter.setBrush(brush);
 
     bst.draw(&painter, this->width(), this->scale);
-
-    std::cout<<this->height() << std::endl;
 }
 
 void RenderArea::zoomIn() {
