@@ -107,3 +107,25 @@ void RenderArea::autoSize() {
     this->setMinimumSize(size);
     this->resize(size);
 }
+
+void RenderArea::mouseReleaseEvent(QMouseEvent *event) {
+    // get mouse location
+    switch(event->button()){
+    case Qt::LeftButton:
+        std::cout << "Left button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
+        this->zoomIn();
+        break;
+    case Qt::RightButton:
+        std::cout << "Right button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
+        this->zoomOut();
+        break;
+    default:
+        std::cout << "Something else at (" << event->pos().rx() << "," << event->pos().ry() << ")"<<std::endl;
+        break;
+    }
+
+    if (event->button() == Qt::LeftButton){
+        // Handle left button
+
+    }
+}

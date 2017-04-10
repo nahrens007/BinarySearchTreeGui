@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPen>
 #include <QBrush>
+#include <QMouseEvent>
 #include "binarysearchtree.h"
 
 class RenderArea : public QWidget
@@ -22,7 +23,7 @@ public slots:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
-
+    void mouseReleaseEvent(QMouseEvent *event) override;
 private:
     BinarySearchTree<int> bst;
     double scale;
