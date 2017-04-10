@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 #include <QWidget>
-#include <QMenuBar>
+#include <QPushButton>
+#include <QScrollArea>
 #include "renderarea.h"
 #include "bst_properties_window.h"
 
@@ -18,11 +19,23 @@ public:
 
 private:
     RenderArea *renderArea;
+    QPushButton *propertyButton;
+    QPushButton *deleteButton;
+    QPushButton *insertButton;
+    QPushButton *zoomInButton;
+    QPushButton *zoomOutButton;
+    QScrollArea *treeScrollArea;
     BST_Properties_Window *prop;
-    QMenuBar *menuBar;
 
 protected:
     virtual void closeEvent(QCloseEvent *event);
+
+private slots:
+    void propertyClicked() const;
+    void insertClicked() const;
+    void deleteClicked() const;
+    void zoomInClicked() const;
+    void zoomOutClicked() const;
 };
 
 #endif // MAINWINDOW_H

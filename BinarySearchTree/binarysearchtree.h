@@ -426,7 +426,7 @@ void BinarySearchTree<T>::draw(QPainter *painter, int width, double &scale)
 
     painter->setFont(QFont("Times", 12 * scale, QFont::Normal));
     this->scale = scale;
-    this->recursiveDraw(root, width/2, 30, getTreeHeight(), painter);
+    this->recursiveDraw(root, width/2, 30 * scale, getTreeHeight(), painter);
 
     return;
 }
@@ -457,7 +457,8 @@ void BinarySearchTree<T>::recursiveDraw(const Node<T> *node, int x, int y, int h
 
     // display node data and the circle encompassing the data
     painter->drawEllipse(QPoint(x, y),nodeRadius,nodeRadius);
-    painter->drawText(QPoint(x-7, y+5), QString::number(node->data));
+
+    painter->drawText(QPoint(x-(7*scale), y+(5*scale)), QString::number(node->data));
 
     // Draw the line to the left child
     if(node->leftChild != 0){

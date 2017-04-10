@@ -13,6 +13,8 @@ public:
     explicit RenderArea(QWidget *parent = 0);
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
+    void zoomIn();
+    void zoomOut();
 
 signals:
 
@@ -26,6 +28,7 @@ private:
     double scale;
     QPen pen;
     QBrush brush;
+    void autoSize();
 };
 
 #endif // RENDERAREA_H
