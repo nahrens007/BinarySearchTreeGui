@@ -1,5 +1,5 @@
 #include "renderarea.h"
-
+#include <QApplication>
 #include <QPainter>
 #include <qglobal.h>
 #include <QTime>
@@ -7,7 +7,7 @@
 RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
     scale(1.0)
 {
-    int height = 6;
+    int height = 0;
 
     switch(height){
     case 1:{
@@ -48,9 +48,8 @@ RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
         break;
     default:
         qsrand(QTime::currentTime().msec());
-        for (int count = 0; count < 20; count++)
-            bst.insert(qrand());
-
+        for (int count = 0; count < 15; count++)
+            bst.insert(qrand() % ((99 + 1) - 1) + 1);
     }
     this->scale = 1;
 
@@ -91,7 +90,7 @@ void RenderArea::zoomIn() {
 }
 
 void RenderArea::zoomOut() {
-    if(this->scale > 0.3) {
+    if(this->scale > 0.2) {
         this->scale -= 0.1;
         this->autoSize();
         this->repaint();
@@ -129,10 +128,5 @@ void RenderArea::mouseReleaseEvent(QMouseEvent *event) {
     default:
         std::cout << "Something else at (" << event->pos().rx() << "," << event->pos().ry() << ")"<<std::endl;
         break;
-    }
-
-    if (event->button() == Qt::LeftButton){
-        // Handle left button
-
     }
 }

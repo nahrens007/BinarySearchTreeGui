@@ -124,6 +124,7 @@ bool BinarySearchTree<T>::insert(const T &item)
         }
         else
         {
+            std::cout << "Duplicate value: " << currentNode->data << std::endl;
             return false; // duplicate
         }
     }
