@@ -1,11 +1,13 @@
 #include "renderarea.h"
 
 #include <QPainter>
+#include <qglobal.h>
+#include <QTime>
 
 RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
     scale(1.0)
 {
-    int height = 5;
+    int height = 6;
 
     switch(height){
     case 1:{
@@ -44,6 +46,11 @@ RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
             bst.insert(arr5[i]);
     }
         break;
+    default:
+        qsrand(QTime::currentTime().msec());
+        for (int count = 0; count < 20; count++)
+            bst.insert(qrand());
+
     }
     this->scale = 1;
 
