@@ -45,9 +45,15 @@ public:
     int getTreeHeight() const;
     bool deleteItem(T);
     bool find(T) const;
-    void draw(QPainter *painter, int width, double &scale);
+    void draw(QPainter *painter, double &scale);
 private:
+    QPainter *painter;
     Node<T> *root;
+    int rx;
+    int ry;
+    int yspace;
+    int xspace;
+    int nodeRadius;
     double scale;
     int max(int a, int b) const;
     void recursivePreOrder(const Node<T> *) const;
@@ -57,7 +63,7 @@ private:
     int recursiveCountLeafNodes(const Node<T> *) const;
     int recursiveComputeHeightOfTree(const Node<T> *) const;
     void recursiveDeleteNodes(const Node<T> *);
-    void recursiveDraw(const Node<T> *node, int x, int y, int height, QPainter *painter) const;
+    void recursiveDraw(const Node<T> *node);
 };
 
 // Node constructor
@@ -422,45 +428,54 @@ void BinarySearchTree<T>::recursiveDeleteNodes(const Node<T> *node)
 }
 
 template<typename T>
-void BinarySearchTree<T>::draw(QPainter *painter, int width, double &scale)
+void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
 {
-
+    this->painter = painter;
+    this->rx = 0;
+    this->ry = 100;
+    xspace = nodeRadius + 2;
+    yspace = nodeRadius * 5;
+    nodeRadius = 20 * scale;
     painter->setFont(QFont("Times", 12 * scale, QFont::Normal));
     this->scale = scale;
-    this->recursiveDraw(root, width/2, 30 * scale, getTreeHeight(), painter);
+    this->recursiveDraw(root);
 
     return;
 }
 
 template<typename T>
-void BinarySearchTree<T>::recursiveDraw(const Node<T> *node, int x, int y, int height, QPainter *painter) const
+void BinarySearchTree<T>::recursiveDraw(const Node<T> *node)
 {
-    if (node == 0)
+    if (node == 0){
+        ry -= yspace * scale;
         return;
-
-    int hvar = height;
-
-    // Draw the children nodes further away to give room for
-    // the rest of the decendants to be drawn
-    if (height > 2)
-        hvar = std::pow(2, height - 1);
-
-    // Radius of the node's circle
-    int nodeRadius = 20 * scale;
-
-    // The amount of pixels between two nodes which share the same parent.
-    // Basically, this value is the amount of pixels from the center of
-    // a node to the edge of another node.
-    int xseparation = nodeRadius + 2;
-    int yseperation = nodeRadius * 5;
+    }
 
 
+    if (rx != 0)
+        rx -= 2 * (xspace * scale);
+    ry += yspace * scale;
+    this->recursiveDraw(node->leftChild);
 
-    // display node data and the circle encompassing the data
-    painter->drawEllipse(QPoint(x, y),nodeRadius,nodeRadius);
+    if (rx == 0) {
+        rx = (nodeRadius * scale) + 10;
+    }
 
-    painter->drawText(QPoint(x-(7*scale), y+(5*scale)), QString::number(node->data));
+    ry += yspace * scale;
+    rx += 2* (xspace * scale);
 
+
+    this->recursiveDraw(node->rightChild);
+
+
+    // Draw node here
+    painter->drawEllipse(QPoint(rx, ry),nodeRadius,nodeRadius);
+    painter->drawText(QPoint(rx-(7*scale), ry+(5*scale)), QString::number(node->data));
+
+    ry -= yspace * scale;
+    return;
+
+    /*
     // Draw the line to the left child
     if(node->leftChild != 0){
         QPen lpen;
@@ -487,15 +502,15 @@ void BinarySearchTree<T>::recursiveDraw(const Node<T> *node, int x, int y, int h
     brush.setStyle(Qt::SolidPattern);
     painter->setBrush(brush);
     // recursive display left child
-    this->recursiveDraw(node->leftChild, x - (hvar * xseparation ), y + yseperation, height - 1, painter);
+    this->recursiveDraw(node->leftChild);
 
     brush.setColor(Qt::darkGreen);
     brush.setStyle(Qt::SolidPattern);
     painter->setBrush(brush);
     // recursive display right child
-    this->recursiveDraw(node->rightChild, x + (hvar * xseparation ), y + yseperation, height - 1, painter);
+    this->recursiveDraw(node->rightChild);
 
-    return;
+    return;*/
 }
 
 #endif /* BINARYSEARCHTREE_H_ */

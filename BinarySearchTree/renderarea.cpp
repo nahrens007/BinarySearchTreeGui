@@ -7,9 +7,16 @@
 RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
     scale(1.0)
 {
-    int height = 0;
+    int height = -1;
 
     switch(height){
+    case -1:{
+        int custArray[9] = {10, 5, 3, 7, 15, 12, 11, 13, 16};
+
+        for(int i = 0; i < 3; i++)
+            bst.insert(custArray[i]);
+    }
+        break;
     case 1:{
         int arr1[3] = {50, 30, 60};
 
@@ -78,7 +85,7 @@ void RenderArea::paintEvent(QPaintEvent * /* event */)
     brush.setStyle(Qt::SolidPattern);
     painter.setBrush(brush);
 
-    bst.draw(&painter, this->width(), this->scale);
+    bst.draw(&painter, this->scale);
 }
 
 void RenderArea::zoomIn() {
@@ -98,7 +105,7 @@ void RenderArea::zoomOut() {
 }
 
 void RenderArea::autoSize() {
-    int height = bst.getTreeHeight();
+    //int height = bst.getTreeHeight();
     /* width from edge to edge of nodes = 4px(always)
      * Maximum number of leaf nodes = 2^height
      * x = 4 * 2^height + nodeDiameter * 2^height
@@ -108,8 +115,8 @@ void RenderArea::autoSize() {
      * nodeRadius = 20; 100 * scale is the equivelant of yseperation.
      * y = (30 * scale) + (100 * scale) * height
      */
-    QSize size((4 * std::pow(2, height) + (40 * scale * std::pow(2, height))),
-               ((30 * scale) + (100 * scale)) * height);
+    //QSize size((4 * std::pow(2, height) + (40 * scale * std::pow(2, height))), ((30 * scale) + (100 * scale)) * height);
+    QSize size(2000, 2000);
     this->setMinimumSize(size);
     this->resize(size);
 }
