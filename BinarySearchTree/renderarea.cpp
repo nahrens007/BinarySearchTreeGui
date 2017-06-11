@@ -13,7 +13,7 @@ RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
     case -1:{
         int custArray[9] = {10, 5, 3, 7, 15, 12, 11, 13, 16};
 
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 9; i++)
             bst.insert(custArray[i]);
     }
         break;

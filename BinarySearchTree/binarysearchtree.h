@@ -448,6 +448,7 @@ void BinarySearchTree<T>::recursiveDraw(const Node<T> *node)
 {
     if (node == 0){
         ry -= yspace * scale;
+        std::cout << "Node == 0" << std::endl;
         return;
     }
 
@@ -455,11 +456,12 @@ void BinarySearchTree<T>::recursiveDraw(const Node<T> *node)
     if (rx != 0)
         rx -= 2 * (xspace * scale);
     ry += yspace * scale;
+
     this->recursiveDraw(node->leftChild);
 
-    if (rx == 0) {
+    if (rx == 0)
         rx = (nodeRadius * scale) + 10;
-    }
+
 
     ry += yspace * scale;
     rx += 2* (xspace * scale);
@@ -471,6 +473,8 @@ void BinarySearchTree<T>::recursiveDraw(const Node<T> *node)
     // Draw node here
     painter->drawEllipse(QPoint(rx, ry),nodeRadius,nodeRadius);
     painter->drawText(QPoint(rx-(7*scale), ry+(5*scale)), QString::number(node->data));
+
+    std::cout << "Drawing data: " << node->data << " at (" << rx << ", " << ry << ")" << std::endl;
 
     ry -= yspace * scale;
     return;
