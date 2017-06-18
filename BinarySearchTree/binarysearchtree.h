@@ -433,9 +433,9 @@ void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
     this->painter = painter;
     this->rx = 0;
     this->ry = 100;
+    nodeRadius = 20 * scale;
     xspace = nodeRadius + 2;
     yspace = nodeRadius * 5;
-    nodeRadius = 20 * scale;
     painter->setFont(QFont("Times", 12 * scale, QFont::Normal));
     this->scale = scale;
     this->recursiveDraw(root);
@@ -478,43 +478,6 @@ void BinarySearchTree<T>::recursiveDraw(const Node<T> *node)
 
     ry -= yspace * scale;
     return;
-
-    /*
-    // Draw the line to the left child
-    if(node->leftChild != 0){
-        QPen lpen;
-        lpen.setColor(QColor(0, 0, 255, 255));
-        lpen.setWidth(2);
-        painter->setPen(lpen);
-        painter->drawLine(QPoint(x, y+nodeRadius), QPoint(x-(hvar * xseparation), y+(yseperation - nodeRadius) ));
-        lpen.setColor(QColor(0, 0, 0, 255));
-        painter->setPen(lpen);
-    }
-    // Draw the line to the right child
-    if(node->rightChild != 0){
-        QPen rpen;
-        rpen.setColor(QColor(0, 200, 0, 255));
-        rpen.setWidth(2);
-        painter->setPen(rpen);
-        painter->drawLine(QPoint(x, y+nodeRadius), QPoint(x+(hvar * xseparation), y+(yseperation - nodeRadius) ));
-        rpen.setColor(QColor(0, 0, 0, 255));
-        painter->setPen(rpen);
-    }
-
-    QBrush brush;
-    brush.setColor(Qt::green);
-    brush.setStyle(Qt::SolidPattern);
-    painter->setBrush(brush);
-    // recursive display left child
-    this->recursiveDraw(node->leftChild);
-
-    brush.setColor(Qt::darkGreen);
-    brush.setStyle(Qt::SolidPattern);
-    painter->setBrush(brush);
-    // recursive display right child
-    this->recursiveDraw(node->rightChild);
-
-    return;*/
 }
 
 #endif /* BINARYSEARCHTREE_H_ */
