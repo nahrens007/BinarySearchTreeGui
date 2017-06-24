@@ -446,7 +446,11 @@ void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
     // first node drawn (leftmost) needs to have a static, predefined
     // location for the rest of the tree to be based off.
     Node<T> *myNode = getLeftmostNode(root);
-    myNode->x = xspace;
+    myNode->x = nodeRadius;
+
+    for (int i = 0; i < 20; i++){
+        painter->drawLine(QPoint(nodeRadius * 2 * i, 0), QPoint(nodeRadius * 2 * i, 2000));
+    }
 
     this->recursiveDraw(root);
 
@@ -514,30 +518,27 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
 
     int level = getNodeLevel(node);
     std::cout << "in rdrawing" << std::endl;
-    int x = 0;
     int y = level * nodeRadius * 2 + yspace * level;
 
     // if there is a left child, we need to draw this parent relative to it
     if (node->leftChild != 0)
-        x = getPxLocOfLeftTree(node->leftChild) + (nodeRadius * 2);
+        node->x = getPxLocOfLeftTree(node->leftChild) + (nodeRadius * 2);
     // in case of a node w/o left child that is not the leftmost in the tree
     // rules out root of tree (would be leftmost)
     // must be the right child of some ancestor (parent, grandparent, etc..)
     // must draw relative to first ancestor where x != 0
     else if (node->x == 0)
-        x = getPxLocOfAncestor(node) + (nodeRadius * 2);
-
-    node->x = x;
+        node->x = getPxLocOfAncestor(node) + (nodeRadius * 2);
 
     // Draw node here
     //painter->drawEllipse(QPoint(x, y),nodeRadius,nodeRadius);
     //painter->drawText(QPoint(x-(7*scale), y+(5*scale)), QString::number(node->data));
 
     // Draw node here
-    painter->drawEllipse(QPoint(x, y),nodeRadius,nodeRadius);
-    painter->drawText(QPoint(x-7, y+5), QString::number(node->data));
+    painter->drawEllipse(QPoint(node->x, y),nodeRadius,nodeRadius);
+    painter->drawText(QPoint(node->x-7, y+5), QString::number(node->data));
 
-    std::cout << "Drawing data: " << node->data << " at (" << x << ", " << y << ")" << std::endl;
+    std::cout << "Drawing data: " << node->data << " at (" << node->x << ", " << y << ")" << std::endl;
 
     this->recursiveDraw(node->rightChild);
 
