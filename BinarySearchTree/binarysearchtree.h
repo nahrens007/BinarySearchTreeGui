@@ -23,8 +23,10 @@ public:
     Node(const T &); // Constructor
 private:
     T data;
+    int x;
     Node<T> *leftChild;
     Node<T> *rightChild;
+    Node<T> *parent;
 };
 
 // Class BinarySearchTree
@@ -64,12 +66,16 @@ private:
     int recursiveComputeHeightOfTree(const Node<T> *) const;
     void recursiveDeleteNodes(const Node<T> *);
     void recursiveDraw(const Node<T> *node);
+    Node<T>* getLeftmostNode(Node<T> *node);
+    int getNodeLevel(Node<T> *node);
+    int getPxLocOfLeftTree(Node<T> *node);
+    int getPxLocOfAncestor(Node<T> *node);
 };
 
 // Node constructor
 template<typename T>
 Node<T>::Node(const T &info) :
-        data(info), leftChild(0), rightChild(0)
+        data(info), x(0), leftChild(0), rightChild(0), parent(0)
 {
     // empty constructor
 }
@@ -139,6 +145,8 @@ bool BinarySearchTree<T>::insert(const T &item)
         trailCurrentNode->rightChild = newNode;
     else
         trailCurrentNode->leftChild = newNode;
+
+    newNode->parent = trailCurrentNode;
 
     return true; // Successful
 }
@@ -441,6 +449,50 @@ void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
     this->recursiveDraw(root);
 
     return;
+}
+
+//recursively get the leftmost node
+template<typename T>
+Node<T>* BinarySearchTree<T>::getLeftmostNode(Node<T> *node)
+{
+    if (node->leftChild == 0)
+        return node;
+    return getLeftmostNode(node->leftChild);
+}
+
+//get the level of the node by tracing back its parents
+template<typename T>
+int BinarySearchTree<T>::getNodeLevel(Node<T> *node)
+{
+    int level = 1;
+    Node<T> *current = node;
+
+    while(current->parent != 0)
+        ++level;
+
+    return level;
+}
+
+// Calculate where the rightmost node is drawn of a subtree
+template<typename T>
+int BinarySearchTree<T>::getPxLocOfLeftTree(Node<T> *node)
+{
+    if(node->leftChild == 0)
+        return node->x;
+    return getPxLocOfLeftTree(node->rightChild);
+}
+
+// Calculate where the ancestor of a node is so that a right child can determine
+// where it should be drawn
+template<typename T>
+int BinarySearchTree<T>::getPxLocOfAncestor(Node<T> *node)
+{
+    // All ancestor's node->x will be 0 unless it has already been drawn -
+    // find the ancestor who's x != 0
+    Node<T> *currentNode = node->parent;
+    while(currentNode->x == 0)
+        currentNode = currentNode->parent;
+    return currentNode->x;
 }
 
 template<typename T>
