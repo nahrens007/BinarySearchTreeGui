@@ -448,10 +448,11 @@ void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
     Node<T> *myNode = getLeftmostNode(root);
     myNode->x = nodeRadius;
 
+    /*
     for (int i = 0; i < 20; i++){
         painter->drawLine(QPoint(nodeRadius * 2 * i, 0), QPoint(nodeRadius * 2 * i, 2000));
     }
-
+    */
     this->recursiveDraw(root);
 
     return;
@@ -518,17 +519,23 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
 
     int level = getNodeLevel(node);
     std::cout << "in rdrawing" << std::endl;
-    int y = level * nodeRadius * 2 + yspace * level;
+    int y = level * nodeRadius * 2 + yspace * (level-1);
 
     // if there is a left child, we need to draw this parent relative to it
     if (node->leftChild != 0)
-        node->x = getPxLocOfLeftTree(node->leftChild) + (nodeRadius * 2);
+    {
+        node->x = getPxLocOfLeftTree(node->leftChild) + (nodeRadius + 2);
+
+        // Draw line to left child
+        painter->drawLine(QPoint(node->x, y + nodeRadius), QPoint(node->leftChild->x + 2,((level + 1)* nodeRadius * 2 + yspace * level) - nodeRadius));
+    }
+
     // in case of a node w/o left child that is not the leftmost in the tree
     // rules out root of tree (would be leftmost)
     // must be the right child of some ancestor (parent, grandparent, etc..)
     // must draw relative to first ancestor where x != 0
     else if (node->x == 0)
-        node->x = getPxLocOfAncestor(node) + (nodeRadius * 2);
+        node->x = getPxLocOfAncestor(node) + (nodeRadius + 2) ;
 
     // Draw node here
     //painter->drawEllipse(QPoint(x, y),nodeRadius,nodeRadius);
@@ -541,6 +548,12 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
     std::cout << "Drawing data: " << node->data << " at (" << node->x << ", " << y << ")" << std::endl;
 
     this->recursiveDraw(node->rightChild);
+
+    if (node->rightChild != 0)
+    {
+        // Draw line to right child
+        painter->drawLine(QPoint(node->x, y + nodeRadius), QPoint(node->rightChild->x + 2,((level + 1)* nodeRadius * 2 + yspace * level) - nodeRadius));
+    }
 
     return;
 }
