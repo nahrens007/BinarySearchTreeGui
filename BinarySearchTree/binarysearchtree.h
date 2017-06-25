@@ -541,6 +541,8 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
     //painter->drawEllipse(QPoint(x, y),nodeRadius,nodeRadius);
     //painter->drawText(QPoint(x-(7*scale), y+(5*scale)), QString::number(node->data));
 
+    // Leftmost node with no left child (only right)
+
     // Draw node here
     painter->drawEllipse(QPoint(node->x, y),nodeRadius,nodeRadius);
     painter->drawText(QPoint(node->x-7, y+5), QString::number(node->data));

@@ -7,13 +7,14 @@
 RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
     scale(1.0)
 {
-    int height = 5;
+    int height = -1;
 
     switch(height){
     case -1:{
-        int custArray[9] = {10, 5, 3, 7, 15, 12, 11, 13, 16};
+        int arrayElements = 17;
+        int custArray[arrayElements] = {10, 5, 3, 7, 15, 12, 11, 13, 16, 42, 14, 6, 8, 18, 22, 17, 4};
 
-        for(int i = 0; i < 9; i++)
+        for(int i = 0; i < arrayElements; i++)
             bst.insert(custArray[i]);
     }
         break;
@@ -116,7 +117,7 @@ void RenderArea::autoSize() {
      * y = (30 * scale) + (100 * scale) * height
      */
     //QSize size((4 * std::pow(2, height) + (40 * scale * std::pow(2, height))), ((30 * scale) + (100 * scale)) * height);
-    QSize size(2000, 2000);
+    QSize size(2000, 4000);
     this->setMinimumSize(size);
     this->resize(size);
 }
