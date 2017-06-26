@@ -447,7 +447,6 @@ void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
     // location for the rest of the tree to be based off.
     Node<T> *myNode = getLeftmostNode(root);
     myNode->x = nodeRadius;
-
     /*
     for (int i = 0; i < 20; i++){
         painter->drawLine(QPoint(nodeRadius * 2 * i, 0), QPoint(nodeRadius * 2 * i, 2000));
@@ -488,8 +487,10 @@ template<typename T>
 int BinarySearchTree<T>::getPxLocOfLeftTree(const Node<T> *node)
 {
     std::cout << "in getPxLocOfLeftTree()" << std::endl;
-    if(node->leftChild == 0)
+    if(node->leftChild == 0){
+        std::cout << "returning location of " << node->data << std::endl;
         return node->x;
+    }
     return getPxLocOfLeftTree(node->rightChild);
 }
 
@@ -541,7 +542,7 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
     //painter->drawEllipse(QPoint(x, y),nodeRadius,nodeRadius);
     //painter->drawText(QPoint(x-(7*scale), y+(5*scale)), QString::number(node->data));
 
-    // Leftmost node with no left child (only right)
+    // Leftmost node with right child
 
     // Draw node here
     painter->drawEllipse(QPoint(node->x, y),nodeRadius,nodeRadius);
