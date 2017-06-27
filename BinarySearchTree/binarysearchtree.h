@@ -544,8 +544,6 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
 
     // Leftmost node with right child
 
-    // Before drawing, display x value of node (in case there is a node not covered by the conditions above, drawing with x location 0)
-    std::cout << "node " << node->data << " at (" << node->x << ", " << y << ")" << std::endl;
     
     // Draw node
     painter->drawEllipse(QPoint(node->x, y),nodeRadius,nodeRadius);
