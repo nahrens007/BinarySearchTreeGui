@@ -538,13 +538,16 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
     else if (node->x == 0)
         node->x = getPxLocOfAncestor(node) + (nodeRadius + 2) ;
 
-    // Draw node here
+    // Draw node
     //painter->drawEllipse(QPoint(x, y),nodeRadius,nodeRadius);
     //painter->drawText(QPoint(x-(7*scale), y+(5*scale)), QString::number(node->data));
 
     // Leftmost node with right child
 
-    // Draw node here
+    // Before drawing, display x value of node (in case there is a node not covered by the conditions above, drawing with x location 0)
+    std::cout << "node " << node->data << " at (" << node->x << ", " << y << ")" << std::endl;
+    
+    // Draw node
     painter->drawEllipse(QPoint(node->x, y),nodeRadius,nodeRadius);
     painter->drawText(QPoint(node->x-7, y+5), QString::number(node->data));
 
