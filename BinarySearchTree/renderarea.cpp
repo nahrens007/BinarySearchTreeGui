@@ -7,12 +7,12 @@
 RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
     scale(1.0)
 {
-    int height = -1;
+    int height =8;
 
     switch(height){
     case -1:{
-        int arrayElements = 16;
-        int custArray[arrayElements] = {10, 7, 3, 9, 15, 12, 11, 13, 16, 42, 14, 6, 8, 18, 22, 17};
+        int arrayElements = 23;
+        int custArray[arrayElements] = {100, 50, 25, 15, 20, 30, 27, 75, 150, 175, 160, 155, 165, 190, 180, 200, 5, 3, 4, 1, 2, 8, 6};
 
         for(int i = 0; i < arrayElements; i++)
             bst.insert(custArray[i]);

@@ -438,7 +438,7 @@ void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
 {
     this->painter = painter;
     nodeRadius = 20 * scale;
-    xspace = nodeRadius + 2;
+    xspace = nodeRadius + 102;
     yspace = nodeRadius * 5;
     painter->setFont(QFont("Times", 12 * scale, QFont::Normal));
     this->scale = scale;
@@ -447,11 +447,7 @@ void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
     // location for the rest of the tree to be based off.
     Node<T> *myNode = getLeftmostNode(root);
     myNode->x = nodeRadius;
-    /*
-    for (int i = 0; i < 20; i++){
-        painter->drawLine(QPoint(nodeRadius * 2 * i, 0), QPoint(nodeRadius * 2 * i, 2000));
-    }
-    */
+
     this->recursiveDraw(root);
 
     return;
@@ -486,11 +482,12 @@ int BinarySearchTree<T>::getNodeLevel(Node<T> *node)
 template<typename T>
 int BinarySearchTree<T>::getPxLocOfLeftTree(const Node<T> *node)
 {
-    std::cout << "in getPxLocOfLeftTree()" << std::endl;
-    if(node->leftChild == 0){
+    std::cout << "in getPxLocOfLeftTree() for " << node->data << std::endl;
+    if(node->rightChild == 0){
         std::cout << "returning location of " << node->data << std::endl;
         return node->x;
     }
+    std::cout << "returning from getPxLocOfLeftTree()" << std::endl;
     return getPxLocOfLeftTree(node->rightChild);
 }
 
@@ -503,8 +500,10 @@ int BinarySearchTree<T>::getPxLocOfAncestor(const Node<T> *node)
     // All ancestor's node->x will be 0 unless it has already been drawn -
     // find the ancestor who's x != 0
     Node<T> *currentNode = node->parent;
-    while(currentNode->x == 0)
+    while(currentNode->x == 0){
         currentNode = currentNode->parent;
+    }
+    std::cout << "exiting getPxLocOfAncestor()" << std::endl;
     return currentNode->x;
 }
 
@@ -525,8 +524,9 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
     // if there is a left child, we need to draw this parent relative to it
     if (node->leftChild != 0)
     {
-        node->x = getPxLocOfLeftTree(node->leftChild) + (nodeRadius + 2);
 
+        node->x = getPxLocOfLeftTree(node->leftChild) + (nodeRadius + 2);
+        std::cout << "returned from left tree in rdraw" << std::endl;
         // Draw line to left child
         painter->drawLine(QPoint(node->x, y + nodeRadius), QPoint(node->leftChild->x + 2,((level + 1)* nodeRadius * 2 + yspace * level) - nodeRadius));
     }
