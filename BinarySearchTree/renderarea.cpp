@@ -7,7 +7,7 @@
 RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
     scale(1.0)
 {
-    int height =8;
+    int height =5;
 
     switch(height){
     case -1:{
@@ -117,7 +117,7 @@ void RenderArea::autoSize() {
      * y = (30 * scale) + (100 * scale) * height
      */
     //QSize size((4 * std::pow(2, height) + (40 * scale * std::pow(2, height))), ((30 * scale) + (100 * scale)) * height);
-    QSize size(2000, 4000);
+    QSize size(4000, 4000);
     this->setMinimumSize(size);
     this->resize(size);
 }

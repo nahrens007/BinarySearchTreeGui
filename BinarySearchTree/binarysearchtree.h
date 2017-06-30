@@ -438,7 +438,7 @@ void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
 {
     this->painter = painter;
     nodeRadius = 20 * scale;
-    xspace = nodeRadius + 102;
+    xspace = nodeRadius;
     yspace = nodeRadius * 5;
     painter->setFont(QFont("Times", 12 * scale, QFont::Normal));
     this->scale = scale;
@@ -525,7 +525,7 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
     if (node->leftChild != 0)
     {
 
-        node->x = getPxLocOfLeftTree(node->leftChild) + (nodeRadius + 2);
+        node->x = getPxLocOfLeftTree(node->leftChild) + nodeRadius + xspace;
         std::cout << "returned from left tree in rdraw" << std::endl;
         // Draw line to left child
         painter->drawLine(QPoint(node->x, y + nodeRadius), QPoint(node->leftChild->x + 2,((level + 1)* nodeRadius * 2 + yspace * level) - nodeRadius));
@@ -536,7 +536,7 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
     // must be the right child of some ancestor (parent, grandparent, etc..)
     // must draw relative to first ancestor where x != 0
     else if (node->x == 0)
-        node->x = getPxLocOfAncestor(node) + (nodeRadius + 2) ;
+        node->x = getPxLocOfAncestor(node) + nodeRadius + xspace;
 
     // Draw node
     //painter->drawEllipse(QPoint(x, y),nodeRadius,nodeRadius);
