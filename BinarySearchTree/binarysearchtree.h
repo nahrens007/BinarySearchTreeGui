@@ -436,6 +436,7 @@ void BinarySearchTree<T>::recursiveDeleteNodes(const Node<T> *node)
     return;
 }
 
+// Set all nodes' x value to 0 in preperation for redrawing with a scale multiplier applied.
 template<typename T>
 void BinarySearchTree<T>::resetNodePosition(Node<T> *node)
 {
@@ -452,35 +453,33 @@ void BinarySearchTree<T>::resetNodePosition(Node<T> *node)
 template<typename T>
 void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
 {
+    // Set properties of the painter for drawing the tree
     this->painter = painter;
-    nodeRadius = 20 * scale;
-    xspace = nodeRadius;
-    yspace = nodeRadius * 5;
-    painter->setFont(QFont("Times", 12 * scale, QFont::Normal));
-    this->scale = scale;
-    painter->drawText(QPoint(0, 12*scale), QString("Hello World"));
+    this->painter->setFont(QFont("Times", 12 * scale, QFont::Normal));
 
-    // Before drawing, must make sure that all nodes have x = 0;
+    // Set variables for drawing the tree
+    this->scale = scale;
+    this->nodeRadius = 20 * scale;
+    this->xspace = nodeRadius;
+    this->yspace = nodeRadius * 5;
+
+    // Before drawing, must make sure that all nodes have x = 0 since in recursiveDraw() we check value of x on some nodes.
     resetNodePosition(root);
 
-    // first node drawn (leftmost) needs to have a static, predefined
+    // first node drawn (leftmost node) needs to have a static, predefined
     // location for the rest of the tree to be based off.
     Node<T> *leftmost = getLeftmostNode(root);
     leftmost->x = nodeRadius;
 
+    // Draw the tree
     this->recursiveDraw(root);
 
-    for (int i = 0; i < 100; i++){
-        painter->drawLine(QPoint(nodeRadius * 2 * i, 0), QPoint(nodeRadius * 2 * i, 4000));
-    }
-
-    std::cout << "\n-------------\n" << std::endl;
     return;
 }
 
 
 
-//recursively get the leftmost node
+// Recursively get the leftmost node
 template<typename T>
 Node<T>* BinarySearchTree<T>::getLeftmostNode(Node<T> *node) const
 {
@@ -491,7 +490,7 @@ Node<T>* BinarySearchTree<T>::getLeftmostNode(Node<T> *node) const
 
 
 
-//get the level of the node by tracing back its parents
+// Get the level of the node by tracing back its parents
 template<typename T>
 int BinarySearchTree<T>::getNodeLevel(Node<T> *node)
 {
@@ -507,7 +506,7 @@ int BinarySearchTree<T>::getNodeLevel(Node<T> *node)
 
 
 
-// Calculate where the rightmost node is drawn of a subtree
+// Calculate where the rightmost node is drawn of a left subtree
 template<typename T>
 int BinarySearchTree<T>::getPxLocOfLeftTree(const Node<T> *node)
 {
@@ -519,17 +518,18 @@ int BinarySearchTree<T>::getPxLocOfLeftTree(const Node<T> *node)
 
 
 
-// Calculate where the ancestor of a node is so that a right child can determine
-// where it should be drawn
+// Calculate where the ancestor of a node is so that the leftmost node of the right
+// subtree can be drawn just to the right of the ancestor
 template<typename T>
 int BinarySearchTree<T>::getPxLocOfAncestor(const Node<T> *node)
 {
     // All ancestor's node->x will be 0 unless it has already been drawn -
     // find the ancestor who's x != 0
     Node<T> *currentNode = node->parent;
-    while(currentNode->x == 0){
+
+    while(currentNode->x == 0)
         currentNode = currentNode->parent;
-    }
+
     return currentNode->x;
 }
 
@@ -538,60 +538,43 @@ int BinarySearchTree<T>::getPxLocOfAncestor(const Node<T> *node)
 template<typename T>
 void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
 {
-    if (node == 0){
+    if (node == 0)
         return;
-    }
 
+    // Draw left subtree
     this->recursiveDraw(node->leftChild);
 
+    // Set the y position of the node based off of the level of the node and the nodeRadius
     int level = getNodeLevel(node);
     int y = level * nodeRadius * 2 + yspace * (level-1);
 
     // if there is a left child, we need to draw this parent relative to it
     if (node->leftChild != 0)
     {
+        node->x = getPxLocOfLeftTree(node->leftChild) + nodeRadius + xspace;
 
-        node->x = ((getPxLocOfLeftTree(node->leftChild)) + nodeRadius + xspace);
         // Draw line to left child
         painter->drawLine(QPoint(node->x, y + nodeRadius), QPoint(node->leftChild->x + 2,((level + 1)* nodeRadius * 2 + yspace * level) - nodeRadius));
     }
 
-    // in case of a node w/o left child that is not the leftmost in the tree
-    // rules out root of tree (would be leftmost)
-    // must be the right child of some ancestor (parent, grandparent, etc..)
-    // must draw relative to first ancestor where x != 0
-    else if (node->x == 0){
-        node->x = ((getPxLocOfAncestor(node)) + nodeRadius + xspace);
+    // in case of a node without a left child that is not the leftmost in the tree
+    // - rules out root of tree (would be leftmost)
+    // - must be the right child of some ancestor (parent, grandparent, etc..)
+    // - must draw relative to first ancestor where x != 0
+    else if (node->x == 0)
+        node->x = getPxLocOfAncestor(node) + nodeRadius + xspace;
 
-        std::cout<<node->data << " drawn at "<< node->x << " parent at " << getPxLocOfAncestor((node)) << std::endl;
-        /*
-        if (node->leftChild == 0 && node->rightChild == 0) {
-            std::cout << "node->x == 0 and no children: "<< node->data << std::endl<< "node->x: " << node->x << " parent->x: " << node->parent->x <<
-                         "\n\n";
-        }else if (node->rightChild == 0) {
-            std::cout << "node->x == 0 with right child: "<< node->data << std::endl<< "node->x: " << node->x << " parent->x: " << node->parent->x <<
-                         "\n\n";
-        }
-        */
-    }
-    // Draw node
-    //painter->drawEllipse(QPoint(x, y),nodeRadius,nodeRadius);
-    //painter->drawText(QPoint(x-(7*scale), y+(5*scale)), QString::number(node->data));
-
-    // Leftmost node with right child
-
-    
-    // Draw node
+    // Draw the node
     painter->drawEllipse(QPoint(node->x, y),nodeRadius,nodeRadius);
     painter->drawText(QPoint(node->x-(7*scale), y+(5*scale)), QString::number(node->data));
 
+    // Draw the right subtree
     this->recursiveDraw(node->rightChild);
 
+    // Draw the line to the right child (if applicable).
+    // Must be done after recursively drawing right child, otherwise x values will still be 0.
     if (node->rightChild != 0)
-    {
-        // Draw line to right child
         painter->drawLine(QPoint(node->x, y + nodeRadius), QPoint(node->rightChild->x + 2,((level + 1)* nodeRadius * 2 + yspace * level) - nodeRadius));
-    }
 
     return;
 }
