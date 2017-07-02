@@ -433,16 +433,18 @@ void BinarySearchTree<T>::recursiveDeleteNodes(const Node<T> *node)
     return;
 }
 
+
+
 template<typename T>
 void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
 {
     this->painter = painter;
     nodeRadius = 20 * scale;
-    xspace = nodeRadius;
-    yspace = nodeRadius * 5;
+    xspace = nodeRadius * scale;
+    yspace = nodeRadius * 5 * scale;
     painter->setFont(QFont("Times", 12 * scale, QFont::Normal));
     this->scale = scale;
-
+    painter->drawText(QPoint(0, 12*scale), QString("Hello World"));
     // first node drawn (leftmost) needs to have a static, predefined
     // location for the rest of the tree to be based off.
     Node<T> *myNode = getLeftmostNode(root);
@@ -453,21 +455,23 @@ void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
     return;
 }
 
+
+
 //recursively get the leftmost node
 template<typename T>
 Node<T>* BinarySearchTree<T>::getLeftmostNode(Node<T> *node) const
 {
-    std::cout << "in getLeftmostNode()" << std::endl;
     if (node->leftChild == 0)
         return node;
     return getLeftmostNode(node->leftChild);
 }
 
+
+
 //get the level of the node by tracing back its parents
 template<typename T>
 int BinarySearchTree<T>::getNodeLevel(Node<T> *node)
 {
-    std::cout << "in getNodeLevel()" << std::endl;
     int level = 1;
     Node<T> *current = node;
 
@@ -478,66 +482,71 @@ int BinarySearchTree<T>::getNodeLevel(Node<T> *node)
     return level;
 }
 
+
+
 // Calculate where the rightmost node is drawn of a subtree
 template<typename T>
 int BinarySearchTree<T>::getPxLocOfLeftTree(const Node<T> *node)
 {
-    std::cout << "in getPxLocOfLeftTree() for " << node->data << std::endl;
     if(node->rightChild == 0){
-        std::cout << "returning location of " << node->data << std::endl;
         return node->x;
     }
-    std::cout << "returning from getPxLocOfLeftTree()" << std::endl;
     return getPxLocOfLeftTree(node->rightChild);
 }
+
+
 
 // Calculate where the ancestor of a node is so that a right child can determine
 // where it should be drawn
 template<typename T>
 int BinarySearchTree<T>::getPxLocOfAncestor(const Node<T> *node)
 {
-    std::cout << "in getPxLocOfAncestor()" << std::endl;
     // All ancestor's node->x will be 0 unless it has already been drawn -
     // find the ancestor who's x != 0
     Node<T> *currentNode = node->parent;
     while(currentNode->x == 0){
         currentNode = currentNode->parent;
     }
-    std::cout << "exiting getPxLocOfAncestor()" << std::endl;
     return currentNode->x;
 }
+
+
 
 template<typename T>
 void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
 {
     if (node == 0){
-        std::cout << "Node == 0" << std::endl;
         return;
     }
 
     this->recursiveDraw(node->leftChild);
 
     int level = getNodeLevel(node);
-    std::cout << "in rdrawing" << std::endl;
     int y = level * nodeRadius * 2 + yspace * (level-1);
 
     // if there is a left child, we need to draw this parent relative to it
     if (node->leftChild != 0)
     {
 
-        node->x = getPxLocOfLeftTree(node->leftChild) + nodeRadius + xspace;
-        std::cout << "returned from left tree in rdraw" << std::endl;
+        node->x = (getPxLocOfLeftTree(node->leftChild) + nodeRadius + xspace)* scale;
         // Draw line to left child
         painter->drawLine(QPoint(node->x, y + nodeRadius), QPoint(node->leftChild->x + 2,((level + 1)* nodeRadius * 2 + yspace * level) - nodeRadius));
+
+        if (node->leftChild == 0 && node->rightChild == 0) {
+            std::cout << "no children at all" << std::endl;
+        }
     }
 
     // in case of a node w/o left child that is not the leftmost in the tree
     // rules out root of tree (would be leftmost)
     // must be the right child of some ancestor (parent, grandparent, etc..)
     // must draw relative to first ancestor where x != 0
-    else if (node->x == 0)
-        node->x = getPxLocOfAncestor(node) + nodeRadius + xspace;
-
+    else if (node->x == 0){
+        node->x = (getPxLocOfAncestor(node) + nodeRadius + xspace) * scale;
+        if (node->leftChild == 0 && node->rightChild == 0) {
+            std::cout << "node->x == 0 and no children" << std::endl;
+        }
+    }
     // Draw node
     //painter->drawEllipse(QPoint(x, y),nodeRadius,nodeRadius);
     //painter->drawText(QPoint(x-(7*scale), y+(5*scale)), QString::number(node->data));
@@ -548,8 +557,6 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
     // Draw node
     painter->drawEllipse(QPoint(node->x, y),nodeRadius,nodeRadius);
     painter->drawText(QPoint(node->x-7, y+5), QString::number(node->data));
-
-    std::cout << "Drawing data: " << node->data << " at (" << node->x << ", " << y << ")" << std::endl;
 
     this->recursiveDraw(node->rightChild);
 

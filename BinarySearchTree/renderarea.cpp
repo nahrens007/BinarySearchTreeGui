@@ -126,15 +126,15 @@ void RenderArea::mouseReleaseEvent(QMouseEvent *event) {
     // get mouse location
     switch(event->button()){
     case Qt::LeftButton:
-        std::cout << "Left button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
+        //std::cout << "Left button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
         this->zoomIn();
         break;
     case Qt::RightButton:
-        std::cout << "Right button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
+        //std::cout << "Right button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
         this->zoomOut();
         break;
     default:
-        std::cout << "Something else at (" << event->pos().rx() << "," << event->pos().ry() << ")"<<std::endl;
+        //std::cout << "Something else at (" << event->pos().rx() << "," << event->pos().ry() << ")"<<std::endl;
         break;
     }
 }
