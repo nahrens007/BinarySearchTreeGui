@@ -7,7 +7,7 @@
 RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
     scale(1.0)
 {
-    int height =5;
+    int height =4;
 
     switch(height){
     case -1:{
