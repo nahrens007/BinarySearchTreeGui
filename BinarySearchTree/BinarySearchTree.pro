@@ -20,7 +20,6 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     binarysearchtree.h \
     list.h \
-    queue.h \
     renderarea.h \
     bst_properties_window.h
 

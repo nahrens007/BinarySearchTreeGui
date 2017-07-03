@@ -7,7 +7,7 @@
 RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
     scale(1.0)
 {
-    int height =4;
+    int height = -1;
 
     switch(height){
     case -1:{
@@ -56,12 +56,10 @@ RenderArea::RenderArea(QWidget *parent) : QWidget(parent), bst(),
         break;
     default:
         qsrand(QTime::currentTime().msec());
-        for (int count = 0; count < 15; count++)
-            bst.insert(qrand() % ((99 + 1) - 1) + 1);
+        for (int count = 0; count < 900; count++)
+            bst.insert(qrand() % ((999 + 1) - 1) + 1);
     }
     this->scale = 1;
-
-    this->autoSize();
 }
 
 QSize RenderArea::sizeHint() const
@@ -74,6 +72,7 @@ QSize RenderArea::minimumSizeHint() const
     return QSize(50, 50);
 }
 
+// What to do when the render area gets repaint() called
 void RenderArea::paintEvent(QPaintEvent * /* event */)
 {
 
@@ -87,8 +86,11 @@ void RenderArea::paintEvent(QPaintEvent * /* event */)
     painter.setBrush(brush);
 
     bst.draw(&painter, this->scale);
+
+    this->autoSize();
 }
 
+// Increment the scale variable and redraw
 void RenderArea::zoomIn() {
     if(this->scale < 2.0){
         this->scale += 0.1;
@@ -97,6 +99,7 @@ void RenderArea::zoomIn() {
     }
 }
 
+// Decrement the scale variable and redraw
 void RenderArea::zoomOut() {
     if(this->scale > 0.2) {
         this->scale -= 0.1;
@@ -105,36 +108,27 @@ void RenderArea::zoomOut() {
     }
 }
 
+// Auto size the render area based on the required size by the tree
 void RenderArea::autoSize() {
-    //int height = bst.getTreeHeight();
-    /* width from edge to edge of nodes = 4px(always)
-     * Maximum number of leaf nodes = 2^height
-     * x = 4 * 2^height + nodeDiameter * 2^height
-     *
-     * Pixels from top to center of root node = 30 * scale
-     * yseperation (pixels between each node center to center) = nodeRadius * 5 * scale.
-     * nodeRadius = 20; 100 * scale is the equivelant of yseperation.
-     * y = (30 * scale) + (100 * scale) * height
-     */
-    //QSize size((4 * std::pow(2, height) + (40 * scale * std::pow(2, height))), ((30 * scale) + (100 * scale)) * height);
-    QSize size(4000, 4000);
+    QSize size(bst.getTotalX(), bst.getTotalY());
     this->setMinimumSize(size);
     this->resize(size);
 }
 
+// Detect mouse release on render area
 void RenderArea::mouseReleaseEvent(QMouseEvent *event) {
     // get mouse location
     switch(event->button()){
     case Qt::LeftButton:
-        //std::cout << "Left button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
+        std::cout << "Left button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
         this->zoomIn();
         break;
     case Qt::RightButton:
-        //std::cout << "Right button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
+        std::cout << "Right button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
         this->zoomOut();
         break;
     default:
-        //std::cout << "Something else at (" << event->pos().rx() << "," << event->pos().ry() << ")"<<std::endl;
+        std::cout << "Something else at (" << event->pos().rx() << "," << event->pos().ry() << ")"<<std::endl;
         break;
     }
 }

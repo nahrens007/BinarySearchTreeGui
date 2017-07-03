@@ -58,8 +58,8 @@ MainWindow::MainWindow(QWidget *parent) :
     centralWidget->setLayout(mainLayout);
     this->setCentralWidget(centralWidget);
     this->setMinimumSize(600, 400);
-    setWindowTitle(tr("Binary Search Tree"));
-    setGeometry(0, 30, 1600, 830);
+    setWindowTitle(tr("Binary Search Tree Visualization"));
+    this->showMaximized();
 
     // Create the properties window (but do not display it)
     prop = new BST_Properties_Window();

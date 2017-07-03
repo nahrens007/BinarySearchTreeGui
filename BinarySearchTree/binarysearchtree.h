@@ -50,6 +50,8 @@ public:
     bool deleteItem(T);
     bool find(T) const;
     void draw(QPainter *painter, double &scale);
+    int getTotalY() const;
+    int getTotalX() const;
 private:
     QPainter *painter;
     Node<T> *root;
@@ -71,6 +73,7 @@ private:
     int getPxLocOfLeftTree(const Node<T> *node);
     int getPxLocOfAncestor(const Node<T> *node);
     void resetNodePosition(Node<T> *node);
+    int recursiveGetTotalX(Node<T> *node) const;
 };
 
 // Node constructor
@@ -469,7 +472,7 @@ void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
     // first node drawn (leftmost node) needs to have a static, predefined
     // location for the rest of the tree to be based off.
     Node<T> *leftmost = getLeftmostNode(root);
-    leftmost->x = nodeRadius;
+    leftmost->x = nodeRadius * 2;
 
     // Draw the tree
     this->recursiveDraw(root);
@@ -533,7 +536,29 @@ int BinarySearchTree<T>::getPxLocOfAncestor(const Node<T> *node)
     return currentNode->x;
 }
 
+template<typename T>
+int BinarySearchTree<T>::getTotalY() const
+{
+    int level = getTreeHeight() + 1;
+    return (level * nodeRadius * 2 + yspace * (level-1)) + nodeRadius * 2;
+}
 
+template<typename T>
+int BinarySearchTree<T>::getTotalX() const
+{
+    return recursiveGetTotalX(root) + nodeRadius * 3;
+}
+
+template<typename T>
+int BinarySearchTree<T>::recursiveGetTotalX(Node<T> *node) const
+{
+    if (node == 0)
+        return 0;
+    else if (node->rightChild == 0 && node->leftChild == 0)
+        return node->x;
+
+    return (recursiveGetTotalX(node->leftChild) > recursiveGetTotalX(node->rightChild)) ? recursiveGetTotalX(node->leftChild) : recursiveGetTotalX(node->rightChild);
+}
 
 template<typename T>
 void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
@@ -566,7 +591,17 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
 
     // Draw the node
     painter->drawEllipse(QPoint(node->x, y),nodeRadius,nodeRadius);
-    painter->drawText(QPoint(node->x-(7*scale), y+(5*scale)), QString::number(node->data));
+
+    // Adjust the text horizontally depending on how many digits are in it
+    int textAdjuster;
+    if(node->data < 10)
+        textAdjuster = 4;
+    else if (node->data < 100)
+        textAdjuster = 7;
+    else
+        textAdjuster = 12;
+
+    painter->drawText(QPoint(node->x-(textAdjuster*scale), y+(5*scale)), QString::number(node->data));
 
     // Draw the right subtree
     this->recursiveDraw(node->rightChild);
