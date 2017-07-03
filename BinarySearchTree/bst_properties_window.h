@@ -2,9 +2,6 @@
 #define BST_PROPERTIES_WINDOW_H
 
 #include <QMainWindow>
-#include <QWidget>
-#include <QScrollArea>
-#include <QVBoxLayout>
 
 class BST_Properties_Window
 {
@@ -17,9 +14,6 @@ public:
 
 private:
     QMainWindow *window;
-    QVBoxLayout *mainLayout;
-    QScrollArea *scrollArea;
-    QWidget *widget;
     void update();
 };
 

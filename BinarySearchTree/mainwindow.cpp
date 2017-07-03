@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(zoomInButton, SIGNAL(clicked()), this, SLOT(zoomInClicked()));
     connect(zoomOutButton, SIGNAL(clicked()), this, SLOT(zoomOutClicked()));
 
-    // Create layout and add buttons
+    // Create button layout and add buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addWidget(propertyButton);
     buttonLayout->addWidget(deleteButton);
@@ -58,7 +58,7 @@ MainWindow::MainWindow(QWidget *parent) :
     centralWidget->setLayout(mainLayout);
     this->setCentralWidget(centralWidget);
     this->setMinimumSize(600, 400);
-    setWindowTitle(tr("Binary Search Tree Visualization"));
+    this->setWindowTitle(tr("Binary Search Tree Visualization"));
     this->showMaximized();
 
     // Create the properties window (but do not display it)
