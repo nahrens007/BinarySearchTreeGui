@@ -25,6 +25,10 @@ private:
     QVBoxLayout *labelLayout;
     QLabel *heightLabel;
     QLineEdit *heightValue;
+    QLabel *nodeCountLabel;
+    QLineEdit *nodeCountValue;
+    QLabel *leafNodesLabel;
+    QLineEdit *leafNodesValue;
     QVBoxLayout *textAreaLayout;
     QHBoxLayout *containerLayout;
     QWidget *container;
