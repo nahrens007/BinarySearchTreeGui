@@ -14,8 +14,10 @@ BST_Properties_Window::BST_Properties_Window()
 
     // textAreaLayout is on the right side - displays value of property
     textAreaLayout = new QVBoxLayout;
-    heightLabelValue = new QLabel("");
-    textAreaLayout->addWidget(heightLabelValue);
+    heightValue = new QLineEdit("");
+    heightValue->setDisabled(true);
+    heightValue->setStyleSheet("background-color: black; color: white;");
+    textAreaLayout->addWidget(heightValue);
 
     containerLayout = new QHBoxLayout;
     containerLayout->addLayout(labelLayout);
@@ -40,7 +42,7 @@ BST_Properties_Window::BST_Properties_Window()
 
 BST_Properties_Window::~BST_Properties_Window(){
     delete heightLabel;
-    delete heightLabelValue;
+    delete heightValue;
     delete labelLayout;
     delete textAreaLayout;
     delete containerLayout;
@@ -58,7 +60,7 @@ void BST_Properties_Window::close() const{
 
 // Update the properties of the tree.
 void BST_Properties_Window::update(BinarySearchTree<int> *bst) {
-    this->heightLabelValue->setText(QString::number(bst->getTreeHeight()));
+    this->heightValue->setText(QString::number(bst->getTreeHeight()));
 }
 
 // Bring the window to the front.

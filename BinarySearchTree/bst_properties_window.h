@@ -8,6 +8,7 @@
 #include <QScrollArea>
 #include <QWidget>
 #include <QLabel>
+#include <QLineEdit>
 
 class BST_Properties_Window
 {
@@ -23,7 +24,7 @@ private:
     QMainWindow *window;
     QVBoxLayout *labelLayout;
     QLabel *heightLabel;
-    QLabel *heightLabelValue;
+    QLineEdit *heightValue;
     QVBoxLayout *textAreaLayout;
     QHBoxLayout *containerLayout;
     QWidget *container;
