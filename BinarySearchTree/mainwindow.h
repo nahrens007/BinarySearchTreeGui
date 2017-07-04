@@ -7,6 +7,7 @@
 #include <QScrollArea>
 #include "renderarea.h"
 #include "bst_properties_window.h"
+#include "binarysearchtree.h"
 
 class MainWindow : public QMainWindow
 {
@@ -26,6 +27,8 @@ private:
     QPushButton *zoomOutButton;
     QScrollArea *treeScrollArea;
     BST_Properties_Window *prop;
+    BinarySearchTree<int>* bst;
+    BinarySearchTree<int>* getBST();
 
 protected:
     virtual void closeEvent(QCloseEvent *event);

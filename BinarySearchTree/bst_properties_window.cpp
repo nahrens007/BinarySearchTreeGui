@@ -1,8 +1,4 @@
 #include "bst_properties_window.h"
-#include <QVBoxLayout>
-#include <QScrollArea>
-#include <QWidget>
-#include <QLabel>
 #include <iostream>
 
 BST_Properties_Window::BST_Properties_Window()
@@ -13,6 +9,15 @@ BST_Properties_Window::BST_Properties_Window()
     std::cout << "Properties constructor" << std::endl;
 }
 BST_Properties_Window::~BST_Properties_Window(){
+    delete heightLabel;
+    delete heightLabelValue;
+    delete labelLayout;
+    delete textAreaLayout;
+    delete containerLayout;
+    delete container;
+    delete scrollArea;
+    delete mainLayout;
+    delete centralWidget;
     delete window;
     std::cout << "Properties destructor" << std::endl;
 }
@@ -22,9 +27,11 @@ void BST_Properties_Window::close() const{
     std::cout << "Properties close()" << std::endl;
 }
 
-void BST_Properties_Window::update() {
+void BST_Properties_Window::update(BinarySearchTree<int> *bst) {
     // update the properties of the tree
     std::cout << "Properties update()" << std::endl;
+    std::cout<< "update() height: " << bst->getTreeHeight() << std::endl;
+    this->heightLabelValue->setText(QString::number(bst->getTreeHeight()));
 }
 
 // bring the window to the front.
@@ -39,25 +46,31 @@ void BST_Properties_Window::create(){
     window->activateWindow();
     window->setVisible(true);
 
-    QVBoxLayout *labelLayout = new QVBoxLayout;\
-    for (int i = 0; i < 10; i++)
-    {
-        QLabel *newLabel = new QLabel("Hello World!!");
-        labelLayout->addWidget(newLabel);
-    }
+    // Create the label layout and labels, and add them all to it
+    labelLayout = new QVBoxLayout;\
+    heightLabel = new QLabel("Height:");
+    labelLayout->addWidget(heightLabel);
 
-    QWidget *container = new QWidget;
-    container->setLayout(labelLayout);
+    textAreaLayout = new QVBoxLayout;
+    heightLabelValue = new QLabel("");
+    textAreaLayout->addWidget(heightLabelValue);
 
-    QScrollArea *scrollArea = new QScrollArea;
+    containerLayout = new QHBoxLayout;
+    containerLayout->addLayout(labelLayout);
+    containerLayout->addLayout(textAreaLayout);
+
+    container = new QWidget;
+    container->setLayout(containerLayout);
+
+    scrollArea = new QScrollArea;
     scrollArea->setWidget(container);
 
     // Create the main layout and add all the widgets to it
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout = new QVBoxLayout;
     mainLayout->addWidget(scrollArea);
-    // mainLayout->addLayout(buttonLayout);
+    // mainLayout->addLayout(buttonLayout); // layout for ok/close button
 
-    QWidget *centralWidget = new QWidget(window);
+    centralWidget = new QWidget(window);
     centralWidget->setLayout(mainLayout);
 
     window->setCentralWidget(centralWidget);
