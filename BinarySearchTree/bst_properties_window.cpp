@@ -7,11 +7,12 @@ BST_Properties_Window::BST_Properties_Window()
     window->setWindowTitle("Properties");
     window->setMinimumSize(QSize(300, 200));
 
-    // Create the label layout and labels, and add them all to it
+    // labelLayout is on the left side - says what the property is
     labelLayout = new QVBoxLayout;\
     heightLabel = new QLabel("Height:");
     labelLayout->addWidget(heightLabel);
 
+    // textAreaLayout is on the right side - displays value of property
     textAreaLayout = new QVBoxLayout;
     heightLabelValue = new QLabel("");
     textAreaLayout->addWidget(heightLabelValue);
@@ -35,9 +36,8 @@ BST_Properties_Window::BST_Properties_Window()
     centralWidget->setLayout(mainLayout);
 
     window->setCentralWidget(centralWidget);
-
-    std::cout << "Properties constructor" << std::endl;
 }
+
 BST_Properties_Window::~BST_Properties_Window(){
     delete heightLabel;
     delete heightLabelValue;
@@ -49,30 +49,29 @@ BST_Properties_Window::~BST_Properties_Window(){
     delete mainLayout;
     delete centralWidget;
     delete window;
-    std::cout << "Properties destructor" << std::endl;
 }
 
+// Close the window.
 void BST_Properties_Window::close() const{
     window->close();
-    std::cout << "Properties close()" << std::endl;
 }
 
+// Update the properties of the tree.
 void BST_Properties_Window::update(BinarySearchTree<int> *bst) {
-    // update the properties of the tree
-    std::cout << "Properties update()" << std::endl;
-    std::cout<< "update() height: " << bst->getTreeHeight() << std::endl;
     this->heightLabelValue->setText(QString::number(bst->getTreeHeight()));
 }
 
-// bring the window to the front.
-void BST_Properties_Window::requestFocus() const{
+// Bring the window to the front.
+void BST_Properties_Window::requestFocus() const
+{
     window->activateWindow();
-    std::cout << "Properties requestFocus()" << std::endl;
+    return;
 }
 
-// create the window and display it.
-void BST_Properties_Window::create(){
-    std::cout << "Properties create()" << std::endl;
-    window->activateWindow();
+// Set window to visible and bring it to the front.
+void BST_Properties_Window::create()
+{
     window->setVisible(true);
+    window->activateWindow();
+    return;
 }
