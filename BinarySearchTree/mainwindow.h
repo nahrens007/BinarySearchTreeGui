@@ -29,6 +29,7 @@ private:
     BST_Properties_Window *prop;
     BinarySearchTree<int>* bst;
     BinarySearchTree<int>* getBST();
+    void buildMenu();
 
 protected:
     virtual void closeEvent(QCloseEvent *event);

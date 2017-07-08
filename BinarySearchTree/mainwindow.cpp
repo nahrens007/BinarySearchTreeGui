@@ -68,6 +68,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // Create the properties window (but do not display it)
     prop = new BST_Properties_Window();
 
+    this->menuBar()->addMenu(tr("&File"));
+
 }
 
 MainWindow::~MainWindow()
@@ -84,13 +86,20 @@ MainWindow::~MainWindow()
     delete centralWidget;
 }
 
-void MainWindow::closeEvent(QCloseEvent *event){
+void MainWindow::buildMenu()
+{
+
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
     prop->close();
     event->accept();
     return;
 }
 
-void MainWindow::propertyClicked() const {
+void MainWindow::propertyClicked() const
+{
     prop->create();
     prop->update(this->bst);
     return;
