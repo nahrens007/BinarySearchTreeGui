@@ -456,6 +456,8 @@ void BinarySearchTree<T>::resetNodePosition(Node<T> *node)
 template<typename T>
 void BinarySearchTree<T>::draw(QPainter *painter, double &scale)
 {
+    if(this->root == 0)
+        return;
     // Set properties of the painter for drawing the tree
     this->painter = painter;
     this->painter->setFont(QFont("Times", 12 * scale, QFont::Normal));
@@ -609,7 +611,7 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
     // Draw the line to the right child (if applicable).
     // Must be done after recursively drawing right child, otherwise x values will still be 0.
     if (node->rightChild != 0)
-        painter->drawLine(QPoint(node->x, y + nodeRadius), QPoint(node->rightChild->x + 2,((level + 1)* nodeRadius * 2 + yspace * level) - nodeRadius));
+        painter->drawLine(QPoint(node->x, y + nodeRadius), QPoint(node->rightChild->x - 2,((level + 1)* nodeRadius * 2 + yspace * level) - nodeRadius));
 
     return;
 }

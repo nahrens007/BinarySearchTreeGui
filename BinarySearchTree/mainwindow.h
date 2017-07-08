@@ -5,6 +5,8 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QMenu>
+#include <QAction>
 #include "renderarea.h"
 /*
  * bst_properties_window.h includes:
@@ -31,10 +33,19 @@ private:
     QPushButton *zoomOutButton;
     QLineEdit *insertValueLineEdit;
     QScrollArea *treeScrollArea;
+    QMenu *fileMenu;
+    QMenu *editMenu;
+    QAction *aboutAction;
+    QAction *loadAction;
+    QAction *saveAction;
+    QAction *exitAction;
+    QAction *resetAction;
+    QAction *insertAction;
     BST_Properties_Window *prop;
     BinarySearchTree<int> *bst;
     BinarySearchTree<int> *getBST();
-    void buildMenu();
+    void createMenu();
+    void createActions();
 
 protected:
     virtual void closeEvent(QCloseEvent *event);
@@ -45,6 +56,12 @@ private slots:
     void deleteClicked() const;
     void zoomInClicked() const;
     void zoomOutClicked() const;
+    void loadMenu() const;
+    void saveMenu() const;
+    void exitMenu() const;
+    void resetMenu() const;
+    void insertMenu() const;
+    void aboutMenu() const;
 };
 
 #endif // MAINWINDOW_H

@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     this->bst = this->getBST();
 
+    this->createMenu();
+
     // Build buttons and layout for buttons on the bottom of the window
     propertyButton = new QPushButton("&Properties", this);
     deleteButton = new QPushButton("&Delete", this);
@@ -71,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Create the properties window (but do not display it)
     prop = new BST_Properties_Window();
 
-    this->menuBar()->addMenu(tr("&File"));
+
 
 }
 
@@ -89,27 +91,67 @@ MainWindow::~MainWindow()
     delete centralWidget;
 }
 
-void MainWindow::buildMenu()
+void MainWindow::createMenu()
 {
+    this->createActions();
+
+    fileMenu = this->menuBar()->addMenu(tr("&File"));
+    fileMenu->addAction(loadAction);
+    fileMenu->addAction(saveAction);
+    fileMenu->addAction(exitAction);
+
+    editMenu = this->menuBar()->addMenu(tr("Edit"));
+    editMenu->addAction(resetAction);
+    editMenu->addAction(insertAction);
+
+    this->menuBar()->addAction(aboutAction);
+}
+
+void MainWindow::createActions()
+{
+    aboutAction = new QAction(tr("&About"), this);
+    aboutAction->setStatusTip("About Binary Search Tree Visualization");
+    connect(aboutAction, &QAction::triggered, this, &MainWindow::aboutMenu);
+
+    loadAction = new QAction(tr("&Load"), this);
+    loadAction->setStatusTip("Load a BST from a file");
+    connect(loadAction, &QAction::triggered, this, &MainWindow::loadMenu);
+
+    saveAction = new QAction(tr("&Save"), this);
+    saveAction->setStatusTip("Save a BST to a file");
+    connect(saveAction, &QAction::triggered, this, &MainWindow::saveMenu);
+
+    exitAction = new QAction(tr("&Exit"), this);
+    exitAction->setStatusTip("Exit the application");
+    connect(exitAction, &QAction::triggered, this, &MainWindow::exitMenu);
+
+    resetAction = new QAction(tr("&Reset"), this);
+    resetAction->setStatusTip("Reset the BST to be empty");
+    connect(resetAction, &QAction::triggered, this, &MainWindow::resetMenu);
+
+    insertAction = new QAction(tr("Inser&t"), this);
+    insertAction->setStatusTip("Insert multiple values into the BST");
+    connect(insertAction, &QAction::triggered, this, &MainWindow::insertMenu);
+
 
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    prop->close();
-    event->accept();
+    prop->close(); // close property window
+    event->setAccepted(true); // set whether to close application or not
     return;
 }
 
 void MainWindow::propertyClicked() const
 {
-    prop->create();
+    prop->show();
     prop->update(this->bst);
     return;
 }
 
 void MainWindow::deleteClicked() const {
-
+    std::cout << "Delete Clicked" << std::endl;
 }
 
 void MainWindow::insertClicked() const
@@ -130,6 +172,38 @@ void MainWindow::zoomOutClicked() const {
     return;
 }
 
+void MainWindow::loadMenu() const
+{
+    std::cout << "Load menu activated" << std::endl;
+}
+
+void MainWindow::saveMenu() const
+{
+    std::cout << "Save menu activated" << std::endl;
+}
+
+void MainWindow::exitMenu() const
+{
+    std::cout << "Exit menu activated" << std::endl;
+}
+
+void MainWindow::resetMenu() const
+{
+    std::cout << "Reset menu activated" << std::endl;
+    this->bst->resetTree();
+    this->renderArea->repaint();
+}
+
+void MainWindow::insertMenu() const
+{
+    std::cout << "Insert menu activated" << std::endl;
+}
+
+void MainWindow::aboutMenu() const
+{
+    std::cout << "About menu activated" << std::endl;
+}
+
 BinarySearchTree<int>* MainWindow::getBST()
 {
     BinarySearchTree<int> *bst = new BinarySearchTree<int>;
@@ -137,8 +211,8 @@ BinarySearchTree<int>* MainWindow::getBST()
 
     switch(height){
     case -1:{
-        int arrayElements = 45;
-        int custArray[arrayElements] = {100, 50, 25, 15, 20, 30, 27, 75, 150, 175, 160, 155, 165, 190, 180, 200, 5, 3, 4, 1, 2, 8, 6, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321};
+        int arrayElements = 23;
+        int custArray[arrayElements] = {100, 50, 25, 15, 20, 30, 27, 75, 150, 175, 160, 155, 165, 190, 180, 200, 5, 3, 4, 1, 2, 8, 6};
 
         for(int i = 0; i < arrayElements; i++)
             bst->insert(custArray[i]);
@@ -183,7 +257,7 @@ BinarySearchTree<int>* MainWindow::getBST()
     default:
         qsrand(QTime::currentTime().msec());
         for (int count = 0; count < 900; count++)
-            bst->insert(qrand() % ((999 + 1) - 1) + 1);
+            bst->insert(qrand() % ((10000 + 1) - 1) + 1);
     }
 
     return bst;

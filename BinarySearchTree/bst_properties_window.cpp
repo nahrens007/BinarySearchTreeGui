@@ -5,7 +5,7 @@ BST_Properties_Window::BST_Properties_Window()
 {
     window = new QMainWindow();
     window->setWindowTitle("Properties");
-    window->setMinimumSize(QSize(300, 200));
+    window->setMinimumSize(QSize(236, 200));
 
     // labelLayout is on the left side - says what the property is
     labelLayout = new QVBoxLayout;\
@@ -28,11 +28,11 @@ BST_Properties_Window::BST_Properties_Window()
     heightValue->setDisabled(true);
     nodeCountValue->setDisabled(true);
     leafNodesValue->setDisabled(true);
-    heightValue->setStyleSheet("background-color: black; color: white; "
+    heightValue->setStyleSheet("color: black; width: 100px;"
                                "padding-left: 10px; font-size: 14px;");
-    nodeCountValue->setStyleSheet("background-color: black; color: white; "
+    nodeCountValue->setStyleSheet("color: black; width: 100px;"
                                   "padding-left: 10px; font-size: 14px;");
-    leafNodesValue->setStyleSheet("background-color: black; color: white; "
+    leafNodesValue->setStyleSheet("color: black; width: 100px;"
                                   "padding-left: 10px; font-size: 14px;");
 
     textAreaLayout->addWidget(heightValue);
@@ -98,7 +98,7 @@ void BST_Properties_Window::requestFocus() const
 }
 
 // Set window to visible and bring it to the front.
-void BST_Properties_Window::create()
+void BST_Properties_Window::show()
 {
     window->setVisible(true);
     window->activateWindow();

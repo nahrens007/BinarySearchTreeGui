@@ -16,7 +16,7 @@ public:
     BST_Properties_Window();
     ~BST_Properties_Window();
     void requestFocus() const;
-    void create();
+    void show();
     void close() const;
     void update(BinarySearchTree<int> *bst);
 
