@@ -15,9 +15,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // Build buttons and layout for buttons on the bottom of the window
     propertyButton = new QPushButton("&Properties", this);
     deleteButton = new QPushButton("&Delete", this);
-    insertButton = new QPushButton("&Insert", this);
+    insertButton = new QPushButton("Insert", this);
     zoomInButton = new QPushButton("Zoom &In", this);
     zoomOutButton = new QPushButton("Zoom &Out", this);
+    insertValueLineEdit = new QLineEdit;
 
     // Set properties of buttons
     propertyButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -26,8 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
     zoomInButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     zoomOutButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
+    insertValueLineEdit->setFixedWidth(100);
+
     deleteButton->setEnabled(false);
-    insertButton->setEnabled(false);
 
     // Connect the slots to the button signals
     connect(propertyButton, SIGNAL(clicked()), this, SLOT(propertyClicked()));
@@ -35,13 +37,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(insertButton, SIGNAL(clicked()), this, SLOT(insertClicked()));
     connect(zoomInButton, SIGNAL(clicked()), this, SLOT(zoomInClicked()));
     connect(zoomOutButton, SIGNAL(clicked()), this, SLOT(zoomOutClicked()));
+    connect(insertValueLineEdit, SIGNAL(returnPressed()), this, SLOT(insertClicked()));
 
     // Create button layout and add buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addWidget(propertyButton);
     buttonLayout->addWidget(deleteButton);
     buttonLayout->addWidget(insertButton);
-    //  need to add text edit for value to insert
+    buttonLayout->addWidget(insertValueLineEdit);
     buttonLayout->addStretch(0);
     buttonLayout->addWidget(zoomInButton);
     buttonLayout->addWidget(zoomOutButton);
@@ -62,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
     centralWidget->setLayout(mainLayout);
     this->setCentralWidget(centralWidget);
     this->setMinimumSize(600, 400);
-    this->setWindowTitle(tr("Binary Search Tree Visualization"));
+    this->setWindowTitle("Binary Search Tree Visualization");
     this->showMaximized();
 
     // Create the properties window (but do not display it)
@@ -109,8 +112,12 @@ void MainWindow::deleteClicked() const {
 
 }
 
-void MainWindow::insertClicked() const {
-
+void MainWindow::insertClicked() const
+{
+    this->bst->insert(insertValueLineEdit->text().toInt());
+    this->renderArea->repaint(); // repaint to show changes to tree
+    insertValueLineEdit->setText(""); // clear text box
+    return;
 }
 
 void MainWindow::zoomInClicked() const {
@@ -130,8 +137,8 @@ BinarySearchTree<int>* MainWindow::getBST()
 
     switch(height){
     case -1:{
-        int arrayElements = 23;
-        int custArray[arrayElements] = {100, 50, 25, 15, 20, 30, 27, 75, 150, 175, 160, 155, 165, 190, 180, 200, 5, 3, 4, 1, 2, 8, 6};
+        int arrayElements = 45;
+        int custArray[arrayElements] = {100, 50, 25, 15, 20, 30, 27, 75, 150, 175, 160, 155, 165, 190, 180, 200, 5, 3, 4, 1, 2, 8, 6, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321};
 
         for(int i = 0; i < arrayElements; i++)
             bst->insert(custArray[i]);

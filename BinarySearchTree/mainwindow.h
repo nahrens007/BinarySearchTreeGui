@@ -6,6 +6,10 @@
 #include <QPushButton>
 #include <QScrollArea>
 #include "renderarea.h"
+/*
+ * bst_properties_window.h includes:
+ * QMainWindow, QVBoxLayout, QHBoxLayout, QScrollArea, QWidget, QLabel, QLineEdit
+ */
 #include "bst_properties_window.h"
 #include "binarysearchtree.h"
 
@@ -25,10 +29,11 @@ private:
     QPushButton *insertButton;
     QPushButton *zoomInButton;
     QPushButton *zoomOutButton;
+    QLineEdit *insertValueLineEdit;
     QScrollArea *treeScrollArea;
     BST_Properties_Window *prop;
-    BinarySearchTree<int>* bst;
-    BinarySearchTree<int>* getBST();
+    BinarySearchTree<int> *bst;
+    BinarySearchTree<int> *getBST();
     void buildMenu();
 
 protected:
