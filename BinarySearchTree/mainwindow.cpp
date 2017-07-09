@@ -6,6 +6,11 @@
 #include <QSpacerItem>
 #include <qglobal.h>
 #include <QTime>
+#include <QFileDialog>
+#include <QStandardPaths>
+#include <QFileInfo>
+#include <QFile>
+#include <QTextStream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -75,13 +80,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Create the properties window (but do not display it)
     prop = new BST_Properties_Window();
-
-    std::cout<< bst->getPreOrderTraversal().toLocal8Bit().toStdString() << std::endl;
-    bst->preOrderTraversal();
-    std::cout<<"\n" << bst->getInOrderTraversal().toLocal8Bit().toStdString() << std::endl;
-    bst->inOrderTraversal();
-    std::cout<< "\n" << bst->getPostOrderTraversal().toLocal8Bit().toStdString() << std::endl;
-    bst->postOrderTraversal();
 }
 
 MainWindow::~MainWindow()
@@ -122,7 +120,7 @@ void MainWindow::createActions()
 
     loadAction = new QAction(tr("&Load"), this);
     loadAction->setStatusTip("Load a BST from a file");
-    connect(loadAction, &QAction::triggered, this, &MainWindow::loadMenu);
+    connect(loadAction, &QAction::triggered, this, &MainWindow::loadFileMenu);
 
     saveAction = new QAction(tr("&Save"), this);
     saveAction->setStatusTip("Save a BST to a file");
@@ -184,15 +182,63 @@ void MainWindow::zoomOutClicked() const {
     return;
 }
 
-void MainWindow::loadMenu() const
+void MainWindow::loadFileMenu()
 {
-    this->statusLabel->setText("Load...");
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                 QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+                                 tr("Text files (*.txt)"));
+
+    QString text;
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        this->statusLabel->setText("Could not open file!");
+        return;
+    }
+
+    this->bst->resetTree();
+
+    QTextStream reader(&file);
+
+    while (!reader.atEnd())
+    {
+        reader >> text;
+        this->bst->insert(text.toInt());
+    }
+    file.close();
+    this->statusLabel->setText("File successfully opened!");
+    return;
 }
 
-void MainWindow::saveMenu() const
+void MainWindow::saveMenu()
 {
-    if(!this->renderArea->grab().save("image.png"))
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
+                                 QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+                                 tr("Text files (*.txt);;Images (*.png *.jpg)"));
+
+    if (QFileInfo(fileName).suffix() == "txt")
+    {
+        QString text = bst->getPreOrderTraversal();
+        QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            this->statusLabel->setText("Could not save file!");
+            return;
+        }
+        QTextStream writer(&file);
+        writer << text;
+        writer.flush();
+        file.close();
+        this->statusLabel->setText("File successfully saved!");
+        return;
+    }
+
+    // if not txt, save as image
+    if(!this->renderArea->grab().save(fileName))
+    {
         this->statusLabel->setText("Image could not be saved...");
+        return;
+    }
     this->statusLabel->setText("Image saved...");
 }
 

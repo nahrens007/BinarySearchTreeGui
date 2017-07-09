@@ -58,8 +58,8 @@ private slots:
     void deleteClicked() const;
     void zoomInClicked() const;
     void zoomOutClicked() const;
-    void loadMenu() const;
-    void saveMenu() const;
+    void loadFileMenu();
+    void saveMenu();
     void exitMenu();
     void resetMenu() const;
     void insertMenu() const;
