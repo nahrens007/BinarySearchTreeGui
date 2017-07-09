@@ -9,6 +9,7 @@ RenderArea::RenderArea(BinarySearchTree<int> *bst, QWidget *parent) : QWidget(pa
 {
     this->bst = bst;
     this->scale = 1;
+    this->setStyleSheet("background-color: white;");
 }
 
 

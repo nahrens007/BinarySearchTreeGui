@@ -7,6 +7,7 @@
 #include <QScrollArea>
 #include <QMenu>
 #include <QAction>
+#include <QLabel>
 #include "renderarea.h"
 /*
  * bst_properties_window.h includes:
@@ -33,6 +34,7 @@ private:
     QPushButton *zoomOutButton;
     QLineEdit *insertValueLineEdit;
     QScrollArea *treeScrollArea;
+    QLabel *statusLabel;
     QMenu *fileMenu;
     QMenu *editMenu;
     QAction *aboutAction;
@@ -58,7 +60,7 @@ private slots:
     void zoomOutClicked() const;
     void loadMenu() const;
     void saveMenu() const;
-    void exitMenu() const;
+    void exitMenu();
     void resetMenu() const;
     void insertMenu() const;
     void aboutMenu() const;

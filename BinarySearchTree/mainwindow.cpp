@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     zoomInButton = new QPushButton("Zoom &In", this);
     zoomOutButton = new QPushButton("Zoom &Out", this);
     insertValueLineEdit = new QLineEdit;
+    statusLabel = new QLabel;
 
     // Set properties of buttons
     propertyButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -47,6 +48,8 @@ MainWindow::MainWindow(QWidget *parent) :
     buttonLayout->addWidget(deleteButton);
     buttonLayout->addWidget(insertButton);
     buttonLayout->addWidget(insertValueLineEdit);
+    buttonLayout->addSpacing(25);
+    buttonLayout->addWidget(statusLabel);
     buttonLayout->addStretch(0);
     buttonLayout->addWidget(zoomInButton);
     buttonLayout->addWidget(zoomOutButton);
@@ -73,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Create the properties window (but do not display it)
     prop = new BST_Properties_Window();
 
-
+    std::cout<< bst->getInOrderTraversal().toLocal8Bit().toStdString() << std::endl;
 
 }
 
@@ -100,7 +103,7 @@ void MainWindow::createMenu()
     fileMenu->addAction(saveAction);
     fileMenu->addAction(exitAction);
 
-    editMenu = this->menuBar()->addMenu(tr("Edit"));
+    editMenu = this->menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(resetAction);
     editMenu->addAction(insertAction);
 
@@ -129,7 +132,7 @@ void MainWindow::createActions()
     resetAction->setStatusTip("Reset the BST to be empty");
     connect(resetAction, &QAction::triggered, this, &MainWindow::resetMenu);
 
-    insertAction = new QAction(tr("Inser&t"), this);
+    insertAction = new QAction(tr("&Insert"), this);
     insertAction->setStatusTip("Insert multiple values into the BST");
     connect(insertAction, &QAction::triggered, this, &MainWindow::insertMenu);
 
@@ -156,40 +159,47 @@ void MainWindow::deleteClicked() const {
 
 void MainWindow::insertClicked() const
 {
-    this->bst->insert(insertValueLineEdit->text().toInt());
+    if(!this->bst->insert(insertValueLineEdit->text().toInt())) // inserts 0 if text isn't an int
+        this->statusLabel->setText("Duplicate valaue...");
+    else
+        this->statusLabel->setText("Value inserted...");
     this->renderArea->repaint(); // repaint to show changes to tree
     insertValueLineEdit->setText(""); // clear text box
     return;
 }
 
 void MainWindow::zoomInClicked() const {
+    this->statusLabel->setText("");
     renderArea->zoomIn();
     return;
 }
 
 void MainWindow::zoomOutClicked() const {
+    this->statusLabel->setText("");
     renderArea->zoomOut();
     return;
 }
 
 void MainWindow::loadMenu() const
 {
-    std::cout << "Load menu activated" << std::endl;
+    this->statusLabel->setText("Load...");
 }
 
 void MainWindow::saveMenu() const
 {
-    std::cout << "Save menu activated" << std::endl;
+    if(!this->renderArea->grab().save("image.png"))
+        this->statusLabel->setText("Image could not be saved...");
+    this->statusLabel->setText("Image saved...");
 }
 
-void MainWindow::exitMenu() const
+void MainWindow::exitMenu()
 {
-    std::cout << "Exit menu activated" << std::endl;
+    this->close();
 }
 
 void MainWindow::resetMenu() const
 {
-    std::cout << "Reset menu activated" << std::endl;
+    this->statusLabel->setText("Reset tree...");
     this->bst->resetTree();
     this->renderArea->repaint();
 }

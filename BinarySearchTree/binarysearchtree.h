@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <QPainter>
+#include <QStack>
 
 
 
@@ -44,6 +45,9 @@ public:
     void preOrderTraversal() const;
     void inOrderTraversal() const;
     void postOrderTraversal() const;
+    QString getPreOrderTraversal() const;
+    QString getInOrderTraversal() const;
+    QString getPostOrderTraversal() const;
     int getNodeCount() const;
     int getLeafNodeCount() const;
     int getTreeHeight() const;
@@ -395,6 +399,42 @@ void BinarySearchTree<T>::recursivePostOrder(const Node<T> *node) const
 }
 
 template<typename T>
+QString BinarySearchTree<T>::getPreOrderTraversal() const
+{
+
+}
+
+template<typename T>
+QString BinarySearchTree<T>::getInOrderTraversal() const
+{
+    QStack<Node<T>*> stack;
+    QString traversal;
+    Node<T> *root = this->root;
+    while (true) {
+        // Go to the left extreme insert all the elements to stack
+        while (root != 0) {
+            stack.push(root);
+            root = root->leftChild;
+        }
+        // check if Stack is empty, if yes, exit from everywhere
+        if (stack.isEmpty()) {
+            return traversal;
+        }
+        // pop the element from the stack , print it and add the nodes at
+        // the right to the Stack
+        root = stack.pop();
+        traversal.append(QString::number(root->data) + " ");
+        root = root->rightChild;
+    }
+}
+
+template<typename T>
+QString BinarySearchTree<T>::getPostOrderTraversal() const
+{
+
+}
+
+template<typename T>
 int BinarySearchTree<T>::recursiveCountNodes(const Node<T> *node) const
 {
     if (node == 0)
@@ -596,9 +636,9 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
 
     // Adjust the text horizontally depending on how many digits are in it
     int textAdjuster;
-    if(node->data < 10)
+    if(std::abs(node->data) < 10)
         textAdjuster = 4;
-    else if (node->data < 100)
+    else if (std::abs(node->data) < 100)
         textAdjuster = 7;
     else
         textAdjuster = 12;
