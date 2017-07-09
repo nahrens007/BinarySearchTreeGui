@@ -401,7 +401,25 @@ void BinarySearchTree<T>::recursivePostOrder(const Node<T> *node) const
 template<typename T>
 QString BinarySearchTree<T>::getPreOrderTraversal() const
 {
-
+    QStack<Node<T>*> stack;
+    QString traversal;
+    Node<T> *root = this->root;
+    while (true) {
+        // Go to the left extreme insert all the elements to stack, add to string as encountered
+        while (root != 0) {
+            traversal.append(QString::number(root->data) + " ");
+            stack.push(root);
+            root = root->leftChild;
+        }
+        // check if Stack is empty, if yes, exit from everywhere
+        if (stack.isEmpty()) {
+            return traversal;
+        }
+        // pop the element from the stack, add the nodes at
+        // the right to the Stack
+        root = stack.pop();
+        root = root->rightChild;
+    }
 }
 
 template<typename T>
@@ -431,7 +449,28 @@ QString BinarySearchTree<T>::getInOrderTraversal() const
 template<typename T>
 QString BinarySearchTree<T>::getPostOrderTraversal() const
 {
+    QStack<Node<T>*> stack1;
+    QStack<Node<T>*> stack2;
+    QString traversal;
+    Node<T> *root = this->root;
+    stack1.push(root);
+    while (!stack1.isEmpty())
+    {
+        // Take out the root and insert into stack 2
+        Node<T> *temp = stack1.pop();
+        stack2.push(temp);
 
+        // now we have the root, push the left and right child of root into the first stack
+        if (temp->leftChild != 0)
+            stack1.push(temp->leftChild);
+        if (temp->rightChild != 0)
+            stack1.push(temp->rightChild);
+    }
+
+    while(!stack2.isEmpty())
+        traversal.append(QString::number(stack2.pop()->data) + " ");
+
+    return traversal;
 }
 
 template<typename T>

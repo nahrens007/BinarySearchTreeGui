@@ -76,8 +76,12 @@ MainWindow::MainWindow(QWidget *parent) :
     // Create the properties window (but do not display it)
     prop = new BST_Properties_Window();
 
-    std::cout<< bst->getInOrderTraversal().toLocal8Bit().toStdString() << std::endl;
-
+    std::cout<< bst->getPreOrderTraversal().toLocal8Bit().toStdString() << std::endl;
+    bst->preOrderTraversal();
+    std::cout<<"\n" << bst->getInOrderTraversal().toLocal8Bit().toStdString() << std::endl;
+    bst->inOrderTraversal();
+    std::cout<< "\n" << bst->getPostOrderTraversal().toLocal8Bit().toStdString() << std::endl;
+    bst->postOrderTraversal();
 }
 
 MainWindow::~MainWindow()
