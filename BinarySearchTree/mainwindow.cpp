@@ -18,6 +18,12 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+
+    // Create default save directory
+    QString directory = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/BSTVisualizer";
+    if (!QDir(directory).exists())
+        QDir().mkdir(directory);
+
     this->bst = this->getBST();
 
     this->createMenu();
@@ -141,24 +147,44 @@ void MainWindow::createActions()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+
+    // Save BST before closing
+    QString fileName = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/BSTVisualizer/last_bst.txt";
+
+    QString text = bst->getPreOrderTraversal();
+    QFile file(fileName);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream writer(&file);
+        writer << text;
+        writer.flush();
+        file.close();
+    }
+
     prop->close(); // close property window
     event->setAccepted(true); // set whether to close application or not
     return;
 }
 
+// Slot for property button
 void MainWindow::propertyClicked() const
 {
+    // show and update the properties gui
     prop->show();
     prop->update(this->bst);
     return;
 }
 
+// Slot for delete button
 void MainWindow::deleteClicked() const {
     std::cout << "Delete Clicked" << std::endl;
 }
 
+// Slot for insert button
 void MainWindow::insertClicked() const
 {
+    // Get entire line of text and iterate through the list of
+    // values separated by whitespace - inserting all the values
     QString values = insertValueLineEdit->text();
     QStringList valueList = values.split(QRegExp("\\s+"), QString::SkipEmptyParts);
     QStringListIterator iterator(valueList);
@@ -175,22 +201,25 @@ void MainWindow::insertClicked() const
     return;
 }
 
+// Slot for zoom in button
 void MainWindow::zoomInClicked() const {
     this->statusLabel->setText("");
     renderArea->zoomIn();
     return;
 }
 
+// Slot for zoom out button
 void MainWindow::zoomOutClicked() const {
     this->statusLabel->setText("");
     renderArea->zoomOut();
     return;
 }
 
+// Slot for load in the file menu
 void MainWindow::loadFileMenu()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
-                                 QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+                                 QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/BSTVisualizer",
                                  tr("Text files (*.txt)"));
 
     QString text;
@@ -215,10 +244,11 @@ void MainWindow::loadFileMenu()
     return;
 }
 
+// Slot for save action in menu
 void MainWindow::saveMenu()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
-                                 QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+                                 QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/BSTVisualizer",
                                  tr("Text files (*.txt);;Images (*.png *.jpg)"));
 
     if (QFileInfo(fileName).suffix() == "txt")
@@ -247,11 +277,13 @@ void MainWindow::saveMenu()
     this->statusLabel->setText("Image saved...");
 }
 
+// Slot for exit action in menu
 void MainWindow::exitMenu()
 {
     this->close();
 }
 
+// Slot for reset action in menu
 void MainWindow::resetMenu() const
 {
     this->statusLabel->setText("Reset tree...");
@@ -259,6 +291,7 @@ void MainWindow::resetMenu() const
     this->renderArea->repaint();
 }
 
+// Slot for about action in menu
 void MainWindow::aboutMenu() const
 {
     BST_About_Window about;
@@ -267,59 +300,28 @@ void MainWindow::aboutMenu() const
 
 BinarySearchTree<int>* MainWindow::getBST()
 {
+
     BinarySearchTree<int> *bst = new BinarySearchTree<int>;
-    int height = -1;
 
-    switch(height){
-    case -1:{
-        int arrayElements = 23;
-        int custArray[arrayElements] = {100, 50, 25, 15, 20, 30, 27, 75, 150, 175, 160, 155, 165, 190, 180, 200, 5, 3, 4, 1, 2, 8, 6};
+    QString fileName = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/BSTVisualizer/last_bst.txt";
 
-        for(int i = 0; i < arrayElements; i++)
-            bst->insert(custArray[i]);
-    }
-        break;
-    case 1:{
-        int arr1[3] = {50, 30, 60};
+    QString text;
+    QFile file(fileName);
 
-        for(int i = 0; i < 3; i++)
-            bst->insert(arr1[i]);
-    }
-        break;
-    case 2:{
-        int arr2[7] = {50, 30, 60, 25, 35, 55, 65};
-
-        for(int i = 0; i < 7; i++)
-            bst->insert(arr2[i]);
-    }
-        break;
-    case 3:{
-        int arr3[15] = {50, 30, 60, 25, 35, 55, 65, 20, 27, 33, 37, 53, 57, 63, 67};
-
-        for(int i = 0; i < 15; i++)
-            bst->insert(arr3[i]);
-    }
-        break;
-    case 4: {
-        int arr4[31] = {50, 30, 20, 15, 5, 17, 25, 23, 27, 40, 35, 33, 37, 45, 43, 47, 70, 60, 55, 53, 57, 65, 63, 67, 80, 75, 85, 73, 77, 83, 87};
-
-        for(int i = 0; i < 31; i++)
-            bst->insert(arr4[i]);
-    }
-        break;
-    case 5:{
-        int arr5[65] = {50, 30, 20, 15, 5, 17, 25, 23, 27, 40, 35, 33, 37, 45, 43, 47, 70, 60, 55, 53, 57, 65, 63, 67, 80, 75, 85, 73, 77, 83, 87, 1,
-                      7, 16, 18, 22, 24, 26, 28, 32, 34, 36, 38, 42, 44, 46, 48, 52, 54, 56, 58, 62, 64, 66, 68, 72, 74, 76, 78, 82, 84, 82, 84, 86, 88};
-
-        for(int i = 0; i < 65; i++)
-            bst->insert(arr5[i]);
-    }
-        break;
-    default:
-        qsrand(QTime::currentTime().msec());
-        for (int count = 0; count < 900; count++)
-            bst->insert(qrand() % ((10000 + 1) - 1) + 1);
+    // If the file doesn't exist or if it can't open, return an empty bst
+    if (!file.exists() || !file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        return bst;
     }
 
+    QTextStream reader(&file);
+
+    while (!reader.atEnd())
+    {
+        reader >> text;
+        bst->insert(text.toInt());
+    }
+
+    file.close();
     return bst;
 }

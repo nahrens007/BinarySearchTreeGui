@@ -77,7 +77,6 @@ private:
     int getPxLocOfLeftTree(const Node<T> *node);
     int getPxLocOfAncestor(const Node<T> *node);
     void resetNodePosition(Node<T> *node);
-    int recursiveGetTotalX(Node<T> *node) const;
 };
 
 // Node constructor
@@ -627,18 +626,13 @@ int BinarySearchTree<T>::getTotalY() const
 template<typename T>
 int BinarySearchTree<T>::getTotalX() const
 {
-    return recursiveGetTotalX(root) + nodeRadius * 3;
-}
+    if (this->root == 0)
+        return nodeRadius*3;
 
-template<typename T>
-int BinarySearchTree<T>::recursiveGetTotalX(Node<T> *node) const
-{
-    if (node == 0)
-        return 0;
-    else if (node->rightChild == 0 && node->leftChild == 0)
-        return node->x;
-
-    return (recursiveGetTotalX(node->leftChild) > recursiveGetTotalX(node->rightChild)) ? recursiveGetTotalX(node->leftChild) : recursiveGetTotalX(node->rightChild);
+    Node<T> *current = root;
+    while (current->rightChild != 0)
+        current = current->rightChild;
+    return current->x + nodeRadius * 3;
 }
 
 template<typename T>
