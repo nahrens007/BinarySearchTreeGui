@@ -111,7 +111,6 @@ void MainWindow::createMenu()
 
     editMenu = this->menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(resetAction);
-    editMenu->addAction(insertAction);
 
     this->menuBar()->addAction(aboutAction);
 }
@@ -137,11 +136,6 @@ void MainWindow::createActions()
     resetAction = new QAction(tr("&Reset"), this);
     resetAction->setStatusTip("Reset the BST to be empty");
     connect(resetAction, &QAction::triggered, this, &MainWindow::resetMenu);
-
-    insertAction = new QAction(tr("&Insert"), this);
-    insertAction->setStatusTip("Insert multiple values into the BST");
-    connect(insertAction, &QAction::triggered, this, &MainWindow::insertMenu);
-
 
 }
 
@@ -263,11 +257,6 @@ void MainWindow::resetMenu() const
     this->statusLabel->setText("Reset tree...");
     this->bst->resetTree();
     this->renderArea->repaint();
-}
-
-void MainWindow::insertMenu() const
-{
-    std::cout << "Insert menu activated" << std::endl;
 }
 
 void MainWindow::aboutMenu() const

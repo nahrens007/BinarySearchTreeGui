@@ -42,7 +42,6 @@ private:
     QAction *saveAction;
     QAction *exitAction;
     QAction *resetAction;
-    QAction *insertAction;
     BST_Properties_Window *prop;
     BinarySearchTree<int> *bst;
     BinarySearchTree<int> *getBST();
@@ -62,7 +61,6 @@ private slots:
     void saveMenu();
     void exitMenu();
     void resetMenu() const;
-    void insertMenu() const;
     void aboutMenu() const;
 };
 
