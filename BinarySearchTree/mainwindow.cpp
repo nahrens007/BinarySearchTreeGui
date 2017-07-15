@@ -88,8 +88,9 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("Binary Search Tree Visualization");
     this->showMaximized();
 
-    // Create the properties window (but do not display it)
+    // Create secondary windows (but do not display them)
     prop = new BST_Properties_Window();
+    about = new BST_About_Window();
 }
 
 MainWindow::~MainWindow()
@@ -102,6 +103,7 @@ MainWindow::~MainWindow()
     delete zoomOutButton;
     delete treeScrollArea;
     delete prop;
+    delete about;
     delete bst;
     delete centralWidget;
 }
@@ -162,6 +164,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 
     prop->close(); // close property window
+    about->close(); // close about window
     event->setAccepted(true); // set whether to close application or not
     return;
 }
@@ -294,8 +297,7 @@ void MainWindow::resetMenu() const
 // Slot for about action in menu
 void MainWindow::aboutMenu() const
 {
-    BST_About_Window about;
-    about.show();
+    about->show();
 }
 
 BinarySearchTree<int>* MainWindow::getBST()

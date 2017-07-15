@@ -14,6 +14,7 @@
  * QMainWindow, QVBoxLayout, QHBoxLayout, QScrollArea, QWidget, QLabel, QLineEdit
  */
 #include "bst_properties_window.h"
+#include "bst_about_window.h"
 #include "binarysearchtree.h"
 
 class MainWindow : public QMainWindow
@@ -43,6 +44,7 @@ private:
     QAction *exitAction;
     QAction *resetAction;
     BST_Properties_Window *prop;
+    BST_About_Window *about;
     BinarySearchTree<int> *bst;
     BinarySearchTree<int> *getBST();
     void createMenu();
