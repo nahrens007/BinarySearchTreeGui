@@ -6,7 +6,7 @@ BST_Properties_Window::BST_Properties_Window()
 {
     window = new QMainWindow();
     window->setWindowTitle("Properties");
-    window->setMinimumSize(QSize(400, 200)); // 236 width
+    window->setFixedSize(QSize(400, 400)); // 236 width
 
     // labelLayout is on the left side - says what the property is
     labelLayout = new QVBoxLayout;\
@@ -62,7 +62,6 @@ BST_Properties_Window::BST_Properties_Window()
     // Create the main layout and add all the widgets to it
     mainLayout = new QVBoxLayout;
     mainLayout->addLayout(containerLayout);
-    mainLayout->addStretch();
     mainLayout->addWidget(preOrderScroll);
     mainLayout->addWidget(inOrderScroll);
     mainLayout->addWidget(postOrderScroll);
