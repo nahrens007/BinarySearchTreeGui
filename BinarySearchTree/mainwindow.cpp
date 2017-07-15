@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "bst_about_window.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QCloseEvent>
@@ -11,6 +12,8 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QTextStream>
+#include <QStringList>
+#include <QStringListIterator>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -35,7 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
     zoomInButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     zoomOutButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    insertValueLineEdit->setFixedWidth(100);
+    insertValueLineEdit->setFixedWidth(200);
+    insertValueLineEdit->setToolTip("Enter single value or multiple values separated by space");
 
     deleteButton->setEnabled(false);
 
@@ -74,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
     centralWidget = new QWidget(this);
     centralWidget->setLayout(mainLayout);
     this->setCentralWidget(centralWidget);
-    this->setMinimumSize(600, 400);
+    this->setMinimumHeight(400);
     this->setWindowTitle("Binary Search Tree Visualization");
     this->showMaximized();
 
@@ -161,10 +165,17 @@ void MainWindow::deleteClicked() const {
 
 void MainWindow::insertClicked() const
 {
-    if(!this->bst->insert(insertValueLineEdit->text().toInt())) // inserts 0 if text isn't an int
-        this->statusLabel->setText("Duplicate valaue...");
-    else
-        this->statusLabel->setText("Value inserted...");
+    QString values = insertValueLineEdit->text();
+    QStringList valueList = values.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    QStringListIterator iterator(valueList);
+
+    while (iterator.hasNext())
+    {
+        if(!this->bst->insert(iterator.next().toInt())) // inserts 0 if text isn't an int
+            this->statusLabel->setText("Duplicate valaue...");
+        else
+            this->statusLabel->setText("Value inserted...");
+    }
     this->renderArea->repaint(); // repaint to show changes to tree
     insertValueLineEdit->setText(""); // clear text box
     return;
@@ -261,7 +272,8 @@ void MainWindow::insertMenu() const
 
 void MainWindow::aboutMenu() const
 {
-    std::cout << "About menu activated" << std::endl;
+    BST_About_Window about;
+    about.show();
 }
 
 BinarySearchTree<int>* MainWindow::getBST()
