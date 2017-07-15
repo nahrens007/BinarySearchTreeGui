@@ -5,10 +5,10 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QScrollArea>
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>
+#include <QTextEdit>
 
 class BST_Properties_Window
 {
@@ -31,9 +31,10 @@ private:
     QLineEdit *leafNodesValue;
     QVBoxLayout *textAreaLayout;
     QHBoxLayout *containerLayout;
-    QWidget *container;
-    QScrollArea *scrollArea;
     QVBoxLayout *mainLayout;
+    QTextEdit *inOrderTraversal;
+    QTextEdit *preOrderTraversal;
+    QTextEdit *postOrderTraversal;
     QWidget *centralWidget;
 };
 

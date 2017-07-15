@@ -1,11 +1,12 @@
 #include "bst_properties_window.h"
 #include <iostream>
+#include <QScrollArea>
 
 BST_Properties_Window::BST_Properties_Window()
 {
     window = new QMainWindow();
     window->setWindowTitle("Properties");
-    window->setMinimumSize(QSize(236, 200));
+    window->setMinimumSize(QSize(400, 200)); // 236 width
 
     // labelLayout is on the left side - says what the property is
     labelLayout = new QVBoxLayout;\
@@ -43,15 +44,28 @@ BST_Properties_Window::BST_Properties_Window()
     containerLayout->addLayout(labelLayout);
     containerLayout->addLayout(textAreaLayout);
 
-    container = new QWidget;
-    container->setLayout(containerLayout);
 
-    scrollArea = new QScrollArea;
-    scrollArea->setWidget(container);
+    preOrderTraversal = new QTextEdit;
+    preOrderTraversal->setEnabled(false);
+    inOrderTraversal = new QTextEdit;
+    inOrderTraversal->setEnabled(false);
+    postOrderTraversal = new QTextEdit;
+    postOrderTraversal->setEnabled(false);
+
+    QScrollArea *preOrderScroll = new QScrollArea;
+    QScrollArea *inOrderScroll = new QScrollArea;
+    QScrollArea *postOrderScroll = new QScrollArea;
+    preOrderScroll->setWidget(preOrderTraversal);
+    inOrderScroll->setWidget(inOrderTraversal);
+    postOrderScroll->setWidget(postOrderTraversal);
 
     // Create the main layout and add all the widgets to it
     mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(scrollArea);
+    mainLayout->addLayout(containerLayout);
+    mainLayout->addStretch();
+    mainLayout->addWidget(preOrderScroll);
+    mainLayout->addWidget(inOrderScroll);
+    mainLayout->addWidget(postOrderScroll);
     // mainLayout->addLayout(buttonLayout); // layout for ok/close button
 
     centralWidget = new QWidget(window);
@@ -70,8 +84,6 @@ BST_Properties_Window::~BST_Properties_Window(){
     delete labelLayout;
     delete textAreaLayout;
     delete containerLayout;
-    delete container;
-    delete scrollArea;
     delete mainLayout;
     delete centralWidget;
     delete window;
@@ -83,10 +95,14 @@ void BST_Properties_Window::close() const{
 }
 
 // Update the properties of the tree.
-void BST_Properties_Window::update(BinarySearchTree<int> *bst) {
+void BST_Properties_Window::update(BinarySearchTree<int> *bst)
+{
     this->heightValue->setText(QString::number(bst->getTreeHeight()));
     this->nodeCountValue->setText(QString::number(bst->getNodeCount()));
     this->leafNodesValue->setText(QString::number(bst->getLeafNodeCount()));
+    this->preOrderTraversal->setText(bst->getPreOrderTraversal());
+    this->inOrderTraversal->setText(bst->getInOrderTraversal());
+    this->postOrderTraversal->setText(bst->getPostOrderTraversal());
     return;
 }
 
