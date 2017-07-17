@@ -26,9 +26,10 @@ BST_Properties_Window::BST_Properties_Window()
     heightValue = new QLineEdit("");
     nodeCountValue = new QLineEdit("");
     leafNodesValue = new QLineEdit("");
-    heightValue->setDisabled(true);
-    nodeCountValue->setDisabled(true);
-    leafNodesValue->setDisabled(true);
+    heightValue->setReadOnly(true);
+    nodeCountValue->setReadOnly(true);
+    leafNodesValue->setReadOnly(true);
+
     heightValue->setStyleSheet("color: black; width: 100px;"
                                "padding-left: 10px; font-size: 14px;");
     nodeCountValue->setStyleSheet("color: black; width: 100px;"
@@ -46,25 +47,21 @@ BST_Properties_Window::BST_Properties_Window()
 
 
     preOrderTraversal = new QTextEdit;
-    preOrderTraversal->setEnabled(false);
     inOrderTraversal = new QTextEdit;
-    inOrderTraversal->setEnabled(false);
     postOrderTraversal = new QTextEdit;
-    postOrderTraversal->setEnabled(false);
-
-    QScrollArea *preOrderScroll = new QScrollArea;
-    QScrollArea *inOrderScroll = new QScrollArea;
-    QScrollArea *postOrderScroll = new QScrollArea;
-    preOrderScroll->setWidget(preOrderTraversal);
-    inOrderScroll->setWidget(inOrderTraversal);
-    postOrderScroll->setWidget(postOrderTraversal);
+    preOrderTraversal->setReadOnly(true);
+    inOrderTraversal->setReadOnly(true);
+    postOrderTraversal->setReadOnly(true);
 
     // Create the main layout and add all the widgets to it
     mainLayout = new QVBoxLayout;
     mainLayout->addLayout(containerLayout);
-    mainLayout->addWidget(preOrderScroll);
-    mainLayout->addWidget(inOrderScroll);
-    mainLayout->addWidget(postOrderScroll);
+    mainLayout->addWidget(new QLabel("Preorder Traversal:"));
+    mainLayout->addWidget(preOrderTraversal);
+    mainLayout->addWidget(new QLabel("Inorder Traversal:"));
+    mainLayout->addWidget(inOrderTraversal);
+    mainLayout->addWidget(new QLabel("Postorder Traversal:"));
+    mainLayout->addWidget(postOrderTraversal);
     // mainLayout->addLayout(buttonLayout); // layout for ok/close button
 
     centralWidget = new QWidget(window);
