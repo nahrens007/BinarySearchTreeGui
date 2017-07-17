@@ -34,6 +34,7 @@ private:
     QPushButton *zoomInButton;
     QPushButton *zoomOutButton;
     QLineEdit *insertValueLineEdit;
+    QLineEdit *deleteValueLineEdit;
     QScrollArea *treeScrollArea;
     QLabel *statusLabel;
     QMenu *fileMenu;

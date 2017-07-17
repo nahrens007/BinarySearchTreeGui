@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     zoomInButton = new QPushButton("Zoom &In", this);
     zoomOutButton = new QPushButton("Zoom &Out", this);
     insertValueLineEdit = new QLineEdit;
+    deleteValueLineEdit = new QLineEdit;
     statusLabel = new QLabel;
 
     // Set properties of buttons
@@ -47,7 +48,8 @@ MainWindow::MainWindow(QWidget *parent) :
     insertValueLineEdit->setFixedWidth(200);
     insertValueLineEdit->setToolTip("Enter single value or multiple values separated by space");
 
-    deleteButton->setEnabled(false);
+    deleteValueLineEdit->setFixedWidth(100);
+    deleteValueLineEdit->setToolTip("Enter value to delete");
 
     // Connect the slots to the button signals
     connect(propertyButton, SIGNAL(clicked()), this, SLOT(propertyClicked()));
@@ -56,11 +58,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(zoomInButton, SIGNAL(clicked()), this, SLOT(zoomInClicked()));
     connect(zoomOutButton, SIGNAL(clicked()), this, SLOT(zoomOutClicked()));
     connect(insertValueLineEdit, SIGNAL(returnPressed()), this, SLOT(insertClicked()));
+    connect(deleteValueLineEdit, SIGNAL(returnPressed()), this, SLOT(deleteClicked()));
 
     // Create button layout and add buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addWidget(propertyButton);
     buttonLayout->addWidget(deleteButton);
+    buttonLayout->addWidget(deleteValueLineEdit);
     buttonLayout->addWidget(insertButton);
     buttonLayout->addWidget(insertValueLineEdit);
     buttonLayout->addSpacing(25);
@@ -180,7 +184,16 @@ void MainWindow::propertyClicked() const
 
 // Slot for delete button
 void MainWindow::deleteClicked() const {
-    std::cout << "Delete Clicked" << std::endl;
+    QString value = deleteValueLineEdit->text();
+
+    if(!this->bst->deleteItem(value.toInt()))
+        this->statusLabel->setText("Value is not in tree...");
+    else
+        this->statusLabel->setText("Value deleted.");
+
+    this->renderArea->repaint(); // repaint to show changes to tree
+    this->deleteValueLineEdit->setText(""); // clear text box
+    return;
 }
 
 // Slot for insert button
@@ -240,7 +253,8 @@ void MainWindow::loadFileMenu()
     while (!reader.atEnd())
     {
         reader >> text;
-        this->bst->insert(text.toInt());
+        if(text != " " && text != "")
+            this->bst->insert(text.toInt());
     }
     file.close();
     this->statusLabel->setText("File successfully opened!");
@@ -278,12 +292,15 @@ void MainWindow::saveMenu()
         return;
     }
     this->statusLabel->setText("Image saved...");
+
+    return;
 }
 
 // Slot for exit action in menu
 void MainWindow::exitMenu()
 {
     this->close();
+    return;
 }
 
 // Slot for reset action in menu
@@ -292,12 +309,14 @@ void MainWindow::resetMenu() const
     this->statusLabel->setText("Reset tree...");
     this->bst->resetTree();
     this->renderArea->repaint();
+    return;
 }
 
 // Slot for about action in menu
 void MainWindow::aboutMenu() const
 {
     about->show();
+    return;
 }
 
 BinarySearchTree<int>* MainWindow::getBST()
@@ -321,7 +340,8 @@ BinarySearchTree<int>* MainWindow::getBST()
     while (!reader.atEnd())
     {
         reader >> text;
-        bst->insert(text.toInt());
+        if (text != " " && text != "")
+            bst->insert(text.toInt());
     }
 
     file.close();
