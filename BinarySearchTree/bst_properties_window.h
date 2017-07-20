@@ -29,6 +29,8 @@ private:
     QLineEdit *nodeCountValue;
     QLabel *leafNodesLabel;
     QLineEdit *leafNodesValue;
+    QLabel *internalNodesLabel;
+    QLineEdit *internalNodesValue;
     QVBoxLayout *textAreaLayout;
     QHBoxLayout *containerLayout;
     QVBoxLayout *mainLayout;

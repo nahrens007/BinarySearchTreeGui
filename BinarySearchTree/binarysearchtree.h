@@ -261,48 +261,59 @@ bool BinarySearchTree<T>::deleteItem(T item)
         return found;
     }
 
+    // NO LEFT, YES RIGHT
     if (currentNode->leftChild == 0 && currentNode->rightChild != 0)
     {
+        // ROOT WITH RIGHT
         if (currentNode == root)
         {
             Node<T> *tempPtr = root;
+            root->rightChild->parent = 0;
             root = root->rightChild;
             delete tempPtr;
+            return found;
         }
+
         if (trailCurrentNode->data < item)
         {
             Node<T> *tempPtr = trailCurrentNode->rightChild;
             trailCurrentNode->rightChild = currentNode->rightChild;
+            currentNode->rightChild->parent = trailCurrentNode;
             delete tempPtr;
         }
         else
         {
             Node<T> *tempPtr = trailCurrentNode->leftChild;
             trailCurrentNode->leftChild = currentNode->rightChild;
+            currentNode->rightChild->parent = trailCurrentNode;
             delete tempPtr;
         }
 
         return found;
     }
-
+    // LEFT CHILD, NO RIGHT CHILD
     if (currentNode->leftChild != 0 && currentNode->rightChild == 0)
     {
+        // Root with left child
         if (currentNode == root)
         {
             Node<T> *tempPtr = root;
             root = root->leftChild;
+            root->parent = 0;
             delete tempPtr;
         }
         if (trailCurrentNode->data < item)
         {
             Node<T> *tempPtr = trailCurrentNode->rightChild;
             trailCurrentNode->rightChild = currentNode->leftChild;
+            currentNode->leftChild->parent = trailCurrentNode;
             delete tempPtr;
         }
         else
         {
             Node<T> *tempPtr = trailCurrentNode->leftChild;
             trailCurrentNode->leftChild = currentNode->leftChild;
+            currentNode->leftChild->parent = trailCurrentNode;
             delete tempPtr;
         }
         return found;
@@ -323,15 +334,18 @@ bool BinarySearchTree<T>::deleteItem(T item)
         {
             Node<T> *tempPtr = trailCurrentNode->rightChild;
             trailCurrentNode->rightChild = currentNode->leftChild;
+            if (currentNode->leftChild != 0)
+                currentNode->leftChild->parent = trailCurrentNode;
             delete tempPtr;
         }
         else
         {
             Node<T> *tempPtr = trailCurrentNode->leftChild;
             trailCurrentNode->leftChild = currentNode->leftChild;
+            if (currentNode->leftChild != 0)
+                currentNode->leftChild->parent = trailCurrentNode;
             delete tempPtr;
         }
-
         ptr->data = currentNode->data;
 
         return found;

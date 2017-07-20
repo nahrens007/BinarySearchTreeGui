@@ -270,11 +270,13 @@ void MainWindow::saveMenu()
 
     if (QFileInfo(fileName).suffix() == "txt")
     {
+        std::cout<< "before getting traversal" << std::endl;
         QString text = bst->getPreOrderTraversal();
+        std::cout<< "after getting traversal" << std::endl;
         QFile file(fileName);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
-            this->statusLabel->setText("Could not save file!");
+            this->statusLabel->setText("File was not saved!");
             return;
         }
         QTextStream writer(&file);
@@ -288,7 +290,7 @@ void MainWindow::saveMenu()
     // if not txt, save as image
     if(!this->renderArea->grab().save(fileName))
     {
-        this->statusLabel->setText("Image could not be saved...");
+        this->statusLabel->setText("Image was not saved...");
         return;
     }
     this->statusLabel->setText("Image saved...");

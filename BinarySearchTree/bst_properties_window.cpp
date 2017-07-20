@@ -13,22 +13,27 @@ BST_Properties_Window::BST_Properties_Window()
     heightLabel = new QLabel("Height:");
     nodeCountLabel = new QLabel("Node count:");
     leafNodesLabel = new QLabel("Leaf nodes:");
+    internalNodesLabel = new QLabel("Internal nodes:");
     heightLabel->setStyleSheet("font-size: 14px;");
     nodeCountLabel->setStyleSheet("font-size: 14px;");
     leafNodesLabel->setStyleSheet("font-size: 14px;");
+    internalNodesLabel->setStyleSheet("font-size: 14px;");
 
     labelLayout->addWidget(heightLabel);
     labelLayout->addWidget(nodeCountLabel);
     labelLayout->addWidget(leafNodesLabel);
+    labelLayout->addWidget(internalNodesLabel);
 
     // textAreaLayout is on the right side - displays value of property
     textAreaLayout = new QVBoxLayout;
     heightValue = new QLineEdit("");
     nodeCountValue = new QLineEdit("");
     leafNodesValue = new QLineEdit("");
+    internalNodesValue = new QLineEdit("");
     heightValue->setReadOnly(true);
     nodeCountValue->setReadOnly(true);
     leafNodesValue->setReadOnly(true);
+    internalNodesValue->setReadOnly(true);
 
     heightValue->setStyleSheet("color: black; width: 100px;"
                                "padding-left: 10px; font-size: 14px;");
@@ -36,10 +41,13 @@ BST_Properties_Window::BST_Properties_Window()
                                   "padding-left: 10px; font-size: 14px;");
     leafNodesValue->setStyleSheet("color: black; width: 100px;"
                                   "padding-left: 10px; font-size: 14px;");
+    internalNodesValue->setStyleSheet("color: black; width: 100px;"
+                                      "padding-left: 10px; font-size: 14px;");
 
     textAreaLayout->addWidget(heightValue);
     textAreaLayout->addWidget(nodeCountValue);
     textAreaLayout->addWidget(leafNodesValue);
+    textAreaLayout->addWidget(internalNodesValue);
 
     containerLayout = new QHBoxLayout;
     containerLayout->addLayout(labelLayout);
@@ -77,6 +85,8 @@ BST_Properties_Window::~BST_Properties_Window(){
     delete nodeCountValue;
     delete leafNodesLabel;
     delete leafNodesValue;
+    delete internalNodesLabel;
+    delete internalNodesValue;
     delete labelLayout;
     delete textAreaLayout;
     delete containerLayout;
@@ -96,6 +106,7 @@ void BST_Properties_Window::update(BinarySearchTree<int> *bst)
     this->heightValue->setText(QString::number(bst->getTreeHeight()));
     this->nodeCountValue->setText(QString::number(bst->getNodeCount()));
     this->leafNodesValue->setText(QString::number(bst->getLeafNodeCount()));
+    this->internalNodesValue->setText(QString::number(bst->getNodeCount() - bst->getLeafNodeCount()));
     this->preOrderTraversal->setText(bst->getPreOrderTraversal());
     this->inOrderTraversal->setText(bst->getInOrderTraversal());
     this->postOrderTraversal->setText(bst->getPostOrderTraversal());
