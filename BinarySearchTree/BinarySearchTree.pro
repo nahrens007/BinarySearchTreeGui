@@ -15,13 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     renderarea.cpp \
-    bst_properties_window.cpp
+    bst_properties_window.cpp \
+    bst_about_window.cpp
 
 HEADERS  += mainwindow.h \
     binarysearchtree.h \
     list.h \
-    queue.h \
     renderarea.h \
-    bst_properties_window.h
+    bst_properties_window.h \
+    bst_about_window.h
 
 FORMS    +=
