@@ -687,8 +687,10 @@ void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
         textAdjuster = 4;
     else if (std::abs(node->data) < 100)
         textAdjuster = 7;
-    else
+    else if (std::abs(node->data) < 1000)
         textAdjuster = 12;
+    else
+        textAdjuster = 16;
 
     painter->drawText(QPoint(node->x-(textAdjuster*scale), y+(5*scale)), QString::number(node->data));
 
