@@ -19,13 +19,15 @@ BST_About_Window::BST_About_Window()
 
     QVBoxLayout *textAreaLayout = new QVBoxLayout();
     QTextEdit *txtEdit = new QTextEdit("The Binary Search Tree Visualization program was developed by "
-                                       "Nathan Ahrens who, at the time, was an Ashland University sophomore. \nStarted as "
+                                       "Nathan Ahrens who, at the time, was an Ashland University sophomore. Started as "
                                        "a fun project, the Binary Search Tree Visualization program was brought to the attention of "
-                                       "Dr. Iyad Ajwa, who helped turn it into a school funded project. The project now has the purpose of "
+                                       "Dr. Iyad Ajwa who helped turn it into a grant-funded project. The project now has the purpose of "
                                        "helping the faculty of Ashland University better describe and display what a Binary Search Tree is to "
-                                       "freshman and sophomore students.");
+                                       "freshman and sophomore students.<br/>"
+                                       "For more information, view the project on GitHub:<br/>"
+                                       "https://github.com/redninja2/BinarySearchTreeGui");
     txtEdit->setStyleSheet("background-color: white; color: black;");
-    txtEdit->setEnabled(false);
+    txtEdit->setReadOnly(true);
     textAreaLayout->addWidget(txtEdit);
 
     containerLayout = new QHBoxLayout;
