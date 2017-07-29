@@ -262,6 +262,9 @@ void MainWindow::loadFileMenu()
             this->bst->insert(text.toInt());
     }
     file.close();
+
+    this->renderArea->repaint();
+
     this->statusLabel->setText("File successfully opened!");
     return;
 }
