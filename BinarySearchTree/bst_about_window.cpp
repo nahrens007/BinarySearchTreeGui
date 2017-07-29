@@ -34,7 +34,7 @@ BST_About_Window::BST_About_Window()
                                        "helping the faculty of Ashland University better describe and display what a Binary Search Tree is to "
                                        "freshman and sophomore students.<br/>"
                                        "For more information, view the project on GitHub:<br/>"
-                                       "https://github.com/redninja2/BinarySearchTreeGui");
+                                       "<i>https://github.com/redninja2/BinarySearchTreeGui</i>");
     txtEdit->setStyleSheet("background-color: white; color: black;");
     txtEdit->setReadOnly(true);
     textAreaLayout->addWidget(txtEdit);
