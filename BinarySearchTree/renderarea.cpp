@@ -1,3 +1,13 @@
+/*
+ * Binary Search Tree Visualization
+ * Ashland University
+ * Nathan Ahrens
+ * Summer 2017
+ *
+ * This class is meant as a "canvas" for a binary search tree.
+ * It's sole purpose is handle the drawing of the BST (given in constructor).
+ */
+
 #include "renderarea.h"
 #include <QApplication>
 #include <QPainter>

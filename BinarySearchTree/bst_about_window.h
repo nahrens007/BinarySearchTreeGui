@@ -1,3 +1,10 @@
+/*
+ * Binary Search Tree Visualization
+ * Ashland University
+ * Nathan Ahrens
+ * Summer 2017
+ */
+
 #ifndef BST_ABOUT_WINDOW_H
 #define BST_ABOUT_WINDOW_H
 

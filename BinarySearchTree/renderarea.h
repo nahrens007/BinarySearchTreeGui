@@ -1,3 +1,10 @@
+/*
+ * Binary Search Tree Visualization
+ * Ashland University
+ * Nathan Ahrens
+ * Summer 2017
+ */
+
 #ifndef RENDERAREA_H
 #define RENDERAREA_H
 

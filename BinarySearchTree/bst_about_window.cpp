@@ -1,3 +1,12 @@
+/*
+ * Binary Search Tree Visualization
+ * Ashland University
+ * Nathan Ahrens
+ * Summer 2017
+ *
+ * This class is the "About" window - it gives information about the project.
+ */
+
 #include "bst_about_window.h"
 #include <QTextEdit>
 

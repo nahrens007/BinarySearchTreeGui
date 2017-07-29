@@ -1,8 +1,25 @@
 /*
- * binarysearchtree.h
+ * Binary Search Tree Visualization
+ * Ashland University
+ * Nathan Ahrens
+ * Summer 2017
  *
- *  Created on: Dec 10, 2016
- *      Author: nahrens
+ * Creation process:
+ * This class is the BST and Node. This was built using a standard BST (from a C++ book),
+ * but has been heavily modified to fit the needs of visualizing a BST. Some functions
+ * have also been created to assist with drawing the BST.
+ *
+ * Drawing the BST:
+ * In order to draw the BST, you must pass a QPainter object to the public draw() function.
+ * This BST will take care of everything else - provided that the QWidget you are drawing on
+ * is large enough.
+ *
+ * Sizing the "canvas" for the BST to fit:
+ * This BST class also contains functions to assist with the sizing of the QWidget "canvas".
+ * The functions "getTotalY()" and "getTotalX()" return the pixel dimensions required to
+ * fully display the BST.
+ * Then, on the canvas QWidget, you can just use setMinimumSize to ensure that the QWidget is
+ * sized appropriately.
  */
 
 
