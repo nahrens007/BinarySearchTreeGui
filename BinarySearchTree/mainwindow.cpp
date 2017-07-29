@@ -79,6 +79,11 @@ MainWindow::MainWindow(QWidget *parent) :
     treeScrollArea = new QScrollArea;
     treeScrollArea->setWidget(renderArea);
 
+    // Pass any events that happen on the scroll area to the
+    // render area (specifically clicking, so that renderArea
+    // can zoom in/out when clicks happen
+    treeScrollArea->installEventFilter(renderArea);
+
     // Create the main layout and add all the widgets to it
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(treeScrollArea);

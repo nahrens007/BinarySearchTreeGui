@@ -17,6 +17,7 @@ public:
     QSize sizeHint() const override;
     void zoomIn();
     void zoomOut();
+    bool eventFilter(QObject *, QEvent *event);
 
 signals:
 

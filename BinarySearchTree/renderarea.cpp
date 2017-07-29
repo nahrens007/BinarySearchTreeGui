@@ -9,6 +9,10 @@ RenderArea::RenderArea(BinarySearchTree<int> *bst, QWidget *parent) : QWidget(pa
 {
     this->bst = bst;
     this->scale = 1;
+
+    // Set background to white so that when the RenderArea is
+    // saved as an image (or the RenderArea is grabbed) the
+    // the background will be white
     this->setStyleSheet("background-color: white;");
 }
 
@@ -59,6 +63,28 @@ void RenderArea::zoomOut() {
     }
 }
 
+// Handle mouse clicking that is done on the QScrollArea that should
+// be handled by the RenderArea (for zooming)
+bool RenderArea::eventFilter(QObject *, QEvent *event)
+{
+    if (event->type() == QEvent::MouseButtonRelease)
+    {
+        QMouseEvent *mb = static_cast<QMouseEvent *>(event);
+        switch(mb->button()){
+        case Qt::LeftButton:
+            this->zoomIn();
+            break;
+        case Qt::RightButton:
+            this->zoomOut();
+            break;
+        default:
+            return true;
+        }
+    }
+
+    return true;
+}
+
 // Auto size the render area based on the required size by the tree
 void RenderArea::autoSize() {
     QSize size(bst->getTotalX(), bst->getTotalY());
@@ -67,19 +93,16 @@ void RenderArea::autoSize() {
 }
 
 // Detect mouse release on render area
-void RenderArea::mouseReleaseEvent(QMouseEvent *event) {
-    // get mouse location
+void RenderArea::mouseReleaseEvent(QMouseEvent *event)
+{
     switch(event->button()){
     case Qt::LeftButton:
-        std::cout << "Left button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
         this->zoomIn();
         break;
     case Qt::RightButton:
-        std::cout << "Right button release at (" << event->pos().rx() << "," << event->pos().ry() << ")" <<std::endl;
         this->zoomOut();
         break;
     default:
-        std::cout << "Something else at (" << event->pos().rx() << "," << event->pos().ry() << ")"<<std::endl;
-        break;
+        return;
     }
 }
