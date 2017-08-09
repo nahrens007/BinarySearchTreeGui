@@ -479,6 +479,9 @@ QString BinarySearchTree<T>::getInOrderTraversal() const
 template<typename T>
 QString BinarySearchTree<T>::getPostOrderTraversal() const
 {
+
+    if (this->isEmpty())
+            return QString("");
     QStack<Node<T>*> stack1;
     QStack<Node<T>*> stack2;
     QString traversal;
