@@ -65,6 +65,7 @@ public:
     QString getPreOrderTraversal() const;
     QString getInOrderTraversal() const;
     QString getPostOrderTraversal() const;
+    QString getBreadthFirstSearch() const;
     int getNodeCount() const;
     int getLeafNodeCount() const;
     int getTreeHeight() const;
@@ -504,6 +505,12 @@ QString BinarySearchTree<T>::getPostOrderTraversal() const
         traversal.append(QString::number(stack2.pop()->data) + " ");
 
     return traversal;
+}
+
+template<typename T>
+QString BinarySearchTree<T>::getBreadthFirstSearch() const
+{
+
 }
 
 template<typename T>
