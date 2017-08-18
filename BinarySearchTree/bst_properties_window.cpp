@@ -15,7 +15,7 @@ BST_Properties_Window::BST_Properties_Window()
 {
     window = new QMainWindow();
     window->setWindowTitle("Properties");
-    window->setFixedSize(QSize(400, 400)); // 236 width
+    window->setFixedSize(QSize(400, 500)); // 236 width
 
     // labelLayout is on the left side - says what the property is
     labelLayout = new QVBoxLayout;\
@@ -66,9 +66,11 @@ BST_Properties_Window::BST_Properties_Window()
     preOrderTraversal = new QTextEdit;
     inOrderTraversal = new QTextEdit;
     postOrderTraversal = new QTextEdit;
+    breadthFirstTraversal = new QTextEdit;
     preOrderTraversal->setReadOnly(true);
     inOrderTraversal->setReadOnly(true);
     postOrderTraversal->setReadOnly(true);
+    breadthFirstTraversal->setReadOnly(true);
 
     // Create the main layout and add all the widgets to it
     mainLayout = new QVBoxLayout;
@@ -79,6 +81,8 @@ BST_Properties_Window::BST_Properties_Window()
     mainLayout->addWidget(inOrderTraversal);
     mainLayout->addWidget(new QLabel("Postorder Traversal:"));
     mainLayout->addWidget(postOrderTraversal);
+    mainLayout->addWidget(new QLabel("Breadthfirst Traversal"));
+    mainLayout->addWidget(breadthFirstTraversal);
     // mainLayout->addLayout(buttonLayout); // layout for ok/close button
 
     centralWidget = new QWidget(window);
@@ -99,6 +103,10 @@ BST_Properties_Window::~BST_Properties_Window(){
     delete labelLayout;
     delete textAreaLayout;
     delete containerLayout;
+    delete preOrderTraversal;
+    delete inOrderTraversal;
+    delete postOrderTraversal;
+    delete breadthFirstTraversal;
     delete mainLayout;
     delete centralWidget;
     delete window;
@@ -119,6 +127,7 @@ void BST_Properties_Window::update(BinarySearchTree<int> *bst)
     this->preOrderTraversal->setText(bst->getPreOrderTraversal());
     this->inOrderTraversal->setText(bst->getInOrderTraversal());
     this->postOrderTraversal->setText(bst->getPostOrderTraversal());
+    this->breadthFirstTraversal->setText(bst->getBreadthFirstSearch());
     return;
 }
 

@@ -511,6 +511,7 @@ template<typename T>
 QString BinarySearchTree<T>::getBreadthFirstSearch() const
 {
 
+    return QString("Breadth First Traversal");
 }
 
 template<typename T>

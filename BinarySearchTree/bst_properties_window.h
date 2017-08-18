@@ -44,6 +44,7 @@ private:
     QTextEdit *inOrderTraversal;
     QTextEdit *preOrderTraversal;
     QTextEdit *postOrderTraversal;
+    QTextEdit *breadthFirstTraversal;
     QWidget *centralWidget;
 };
 
