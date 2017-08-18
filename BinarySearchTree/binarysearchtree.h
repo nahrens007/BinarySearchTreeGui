@@ -29,6 +29,7 @@
 #include <iostream>
 #include <QPainter>
 #include <QStack>
+#include <QQueue>
 
 
 
@@ -65,7 +66,7 @@ public:
     QString getPreOrderTraversal() const;
     QString getInOrderTraversal() const;
     QString getPostOrderTraversal() const;
-    QString getBreadthFirstSearch() const;
+    QString getBreadthFirstSearch();
     int getNodeCount() const;
     int getLeafNodeCount() const;
     int getTreeHeight() const;
@@ -506,13 +507,53 @@ QString BinarySearchTree<T>::getPostOrderTraversal() const
 
     return traversal;
 }
-
+ /*
+  * Return a string of the breadth first traversal.
+  */
 template<typename T>
-QString BinarySearchTree<T>::getBreadthFirstSearch() const
+QString BinarySearchTree<T>::getBreadthFirstSearch()
 {
+    QString traversal("");
 
-    return QString("Breadth First Traversal");
+    /* Points to node we are processing. */
+    Node<T> *traverse;
+
+    if (this->root == 0)
+        return traversal;  /* Nothing to traverse. */
+
+    /* Create a queue to hold node pointers. */
+    QQueue<Node<T>*> ptrQueue;
+
+    /*
+    * Gotta put something in the queue initially,
+    * so that we enter the body of the loop.
+    */
+    ptrQueue.enqueue(this->root);
+
+    while (!ptrQueue.isEmpty()) {
+        traverse = ptrQueue.dequeue();
+
+        //Visit the node pointed to by traverse.
+        traversal.append(QString::number(traverse->data) + " ");
+
+        /*
+        * If there is a left child, add it
+        * for later processing.
+        */
+        if (traverse->leftChild != 0)
+        ptrQueue.enqueue(traverse->leftChild);
+
+        /*
+        * If there is a right child, add it
+        * for later processing.
+        */
+        if (traverse->rightChild != 0)
+        ptrQueue.enqueue(traverse->rightChild);
+    }
+
+    return traversal;
 }
+
 
 template<typename T>
 int BinarySearchTree<T>::recursiveCountNodes(const Node<T> *node) const
