@@ -10,7 +10,7 @@ This project allows faculty to be able to graphically display Binary Search Tree
 - Insert nodes graphically, after the BST has already been built (or build a tree from scratch)
 - Delete nodes graphically (you can not click on the node to delete it, however)
 - Easily view common properties of a Binary Search Tree including: height, total node count, leaf node count, and internal node count
-- Easily view preorder, inorder, and postorder traversals of a BST
+- Easily view preorder, inorder, postorder, and breadth first traversals of a BST
 - Zoom in and out in order to more easily view a large or small tree
 
 # Design
