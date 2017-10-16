@@ -109,6 +109,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Create secondary windows (but do not display them)
     prop = new BST_Properties_Window();
     about = new BST_About_Window();
+
 }
 
 MainWindow::~MainWindow()

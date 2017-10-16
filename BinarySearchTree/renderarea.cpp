@@ -40,7 +40,8 @@ QSize RenderArea::minimumSizeHint() const
 // What to do when the render area gets repaint() called
 void RenderArea::paintEvent(QPaintEvent * /* event */)
 {
-
+    if (this->bst->isEmpty())
+        return;
     QPainter painter(this);
 
     painter.setRenderHint(QPainter::Antialiasing);
@@ -57,6 +58,8 @@ void RenderArea::paintEvent(QPaintEvent * /* event */)
 
 // Increment the scale variable and redraw
 void RenderArea::zoomIn() {
+    if (this->bst->isEmpty())
+        return;
     if(this->scale < 2.0){
         this->scale += 0.1;
         this->autoSize();
@@ -66,6 +69,8 @@ void RenderArea::zoomIn() {
 
 // Decrement the scale variable and redraw
 void RenderArea::zoomOut() {
+    if (this->bst->isEmpty())
+        return;
     if(this->scale > 0.2) {
         this->scale -= 0.1;
         this->autoSize();
