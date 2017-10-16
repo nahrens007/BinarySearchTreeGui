@@ -182,7 +182,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         file.close();
     }
 
-    prop->close(); // close property window
+    prop->closePropertyWindow(); // close property window
     about->close(); // close about window
     event->setAccepted(true); // set whether to close application or not
     return;

@@ -10,12 +10,12 @@
 #include "bst_properties_window.h"
 #include <iostream>
 #include <QScrollArea>
+#include <QHBoxLayout>
 
-BST_Properties_Window::BST_Properties_Window()
+BST_Properties_Window::BST_Properties_Window(QWidget *parent) : QMainWindow(parent)
 {
-    window = new QMainWindow();
-    window->setWindowTitle("Properties");
-    window->setFixedSize(QSize(400, 500)); // 236 width
+    this->setWindowTitle("Properties");
+    this->setFixedSize(QSize(400, 525)); // 236 width
 
     // labelLayout is on the left side - says what the property is
     labelLayout = new QVBoxLayout;\
@@ -72,6 +72,13 @@ BST_Properties_Window::BST_Properties_Window()
     postOrderTraversal->setReadOnly(true);
     breadthFirstTraversal->setReadOnly(true);
 
+    exitButton = new QPushButton("E&xit", this);
+    connect(exitButton, SIGNAL(clicked()), this, SLOT(exitSlot()));
+
+    QHBoxLayout *buttonLayout = new QHBoxLayout;
+    buttonLayout->addStretch(0);
+    buttonLayout->addWidget(exitButton);
+
     // Create the main layout and add all the widgets to it
     mainLayout = new QVBoxLayout;
     mainLayout->addLayout(containerLayout);
@@ -83,12 +90,12 @@ BST_Properties_Window::BST_Properties_Window()
     mainLayout->addWidget(postOrderTraversal);
     mainLayout->addWidget(new QLabel("Breadthfirst Traversal"));
     mainLayout->addWidget(breadthFirstTraversal);
-    // mainLayout->addLayout(buttonLayout); // layout for ok/close button
+    mainLayout->addLayout(buttonLayout); // layout for ok/close button
 
-    centralWidget = new QWidget(window);
+    centralWidget = new QWidget(this);
     centralWidget->setLayout(mainLayout);
 
-    window->setCentralWidget(centralWidget);
+    this->setCentralWidget(centralWidget);
 }
 
 BST_Properties_Window::~BST_Properties_Window(){
@@ -107,14 +114,16 @@ BST_Properties_Window::~BST_Properties_Window(){
     delete inOrderTraversal;
     delete postOrderTraversal;
     delete breadthFirstTraversal;
+    delete exitButton;
     delete mainLayout;
     delete centralWidget;
-    delete window;
 }
 
 // Close the window.
-void BST_Properties_Window::close() const{
-    window->close();
+void BST_Properties_Window::closePropertyWindow()
+{
+    this->close();
+    return;
 }
 
 // Update the properties of the tree.
@@ -131,17 +140,17 @@ void BST_Properties_Window::update(BinarySearchTree<int> *bst)
     return;
 }
 
-// Bring the window to the front.
-void BST_Properties_Window::requestFocus() const
-{
-    window->activateWindow();
-    return;
-}
 
 // Set window to visible and bring it to the front.
 void BST_Properties_Window::show()
 {
-    window->setVisible(true);
-    window->activateWindow();
+    this->setVisible(true);
+    this->activateWindow();
+    return;
+}
+
+void BST_Properties_Window::exitSlot()
+{
+    this->close();
     return;
 }

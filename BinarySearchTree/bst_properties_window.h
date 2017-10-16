@@ -16,19 +16,20 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QTextEdit>
+#include <QPushButton>
 
-class BST_Properties_Window
+class BST_Properties_Window : public QMainWindow
 {
+    Q_OBJECT
+    QWidget *centralWidget;
 public:
-    BST_Properties_Window();
+    explicit BST_Properties_Window(QWidget *parent = 0);
     ~BST_Properties_Window();
-    void requestFocus() const;
     void show();
-    void close() const;
+    void closePropertyWindow();
     void update(BinarySearchTree<int> *bst);
 
 private:
-    QMainWindow *window;
     QVBoxLayout *labelLayout;
     QLabel *heightLabel;
     QLineEdit *heightValue;
@@ -45,7 +46,10 @@ private:
     QTextEdit *preOrderTraversal;
     QTextEdit *postOrderTraversal;
     QTextEdit *breadthFirstTraversal;
-    QWidget *centralWidget;
+    QPushButton *exitButton;
+
+private slots:
+    void exitSlot();
 };
 
 #endif // BST_PROPERTIES_WINDOW_H
