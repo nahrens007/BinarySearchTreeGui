@@ -129,6 +129,7 @@ BinarySearchTree<T>::~BinarySearchTree()
     this->root = 0;
 }
 
+// Delete a node at a given x, y location
 template<typename T>
 bool BinarySearchTree<T>::recursiveDeleteAtLocation(Node<T> *node, int x, int y)
 {
@@ -142,7 +143,6 @@ bool BinarySearchTree<T>::recursiveDeleteAtLocation(Node<T> *node, int x, int y)
     int level = getNodeLevel(node);
     int nodey = (level * nodeRadius * 2 + yspace * (level-1)) - nodeRadius;
     int nodex = node->x - nodeRadius;
-    std::cout<< "data: " << node->data << " - " << nodex << ", " << nodey << std::endl;
 
     // correct x, check y
     if (nodex <= x && x <=nodex + nodeRadius*2 )
@@ -160,7 +160,6 @@ bool BinarySearchTree<T>::recursiveDeleteAtLocation(Node<T> *node, int x, int y)
 template<typename T>
 bool BinarySearchTree<T>::deleteAtLocation(int x, int y)
 {
-    std::cout<<x << ", " << y << std::endl;
     return recursiveDeleteAtLocation(root, x, y);
 }
 

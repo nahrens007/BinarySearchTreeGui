@@ -40,6 +40,7 @@ QSize RenderArea::minimumSizeHint() const
 // What to do when the render area gets repaint() called
 void RenderArea::paintEvent(QPaintEvent * /* event */)
 {
+    // Only repaint the tree if it's not empty
     if (this->bst->isEmpty())
         return;
     QPainter painter(this);
@@ -53,9 +54,11 @@ void RenderArea::paintEvent(QPaintEvent * /* event */)
 
     bst->draw(&painter, this->scale);
 
+    // Autosize the renderArea after the tree has been drawn.
     this->autoSize();
 }
 
+// For outside to call - makes sure that the size is set correctly for scroll areas.
 void RenderArea::callRepaint()
 {
     if (this->bst->isEmpty())
@@ -123,7 +126,7 @@ void RenderArea::mouseReleaseEvent(QMouseEvent *event)
     case Qt::LeftButton:
         if ( event->modifiers() & Qt::ControlModifier )
         {
-            // search for a node at the provided location and delete it.
+            // search for a node at the provided location and delete it. Returns false if no node was found.
             this->bst->deleteAtLocation(event->x(), event->y());
             this->repaint();
             break;
