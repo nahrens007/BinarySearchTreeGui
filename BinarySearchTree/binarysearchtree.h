@@ -75,6 +75,7 @@ public:
     void draw(QPainter *painter, double &scale);
     int getTotalY() const;
     int getTotalX() const;
+    bool deleteAtLocation(int x, int y);
 private:
     QPainter *painter;
     Node<T> *root;
@@ -96,6 +97,7 @@ private:
     int getPxLocOfLeftTree(const Node<T> *node);
     int getPxLocOfAncestor(const Node<T> *node);
     void resetNodePosition(Node<T> *node);
+    bool recursiveDeleteAtLocation(Node<T> *node, int x, int y);
 };
 
 // Node constructor
@@ -126,6 +128,42 @@ BinarySearchTree<T>::~BinarySearchTree()
     recursiveDeleteNodes(root);
     this->root = 0;
 }
+
+template<typename T>
+bool BinarySearchTree<T>::recursiveDeleteAtLocation(Node<T> *node, int x, int y)
+{
+    if (node == 0)
+        return false;
+
+
+    if (recursiveDeleteAtLocation(node->leftChild, x, y) == true)
+        return true;
+
+    int level = getNodeLevel(node);
+    int nodey = (level * nodeRadius * 2 + yspace * (level-1)) - nodeRadius;
+    int nodex = node->x - nodeRadius;
+    std::cout<< "data: " << node->data << " - " << nodex << ", " << nodey << std::endl;
+
+    // correct x, check y
+    if (nodex <= x && x <=nodex + nodeRadius*2 )
+    {
+        // correct y, delete
+        if (nodey <= y && y <= nodey + nodeRadius*2)
+        {
+            deleteItem(node->data);
+            return true;
+        }
+    }
+    return recursiveDeleteAtLocation(node->rightChild, x, y);
+}
+
+template<typename T>
+bool BinarySearchTree<T>::deleteAtLocation(int x, int y)
+{
+    std::cout<<x << ", " << y << std::endl;
+    return recursiveDeleteAtLocation(root, x, y);
+}
+
 template<typename T>
 bool BinarySearchTree<T>::isEmpty() const
 {

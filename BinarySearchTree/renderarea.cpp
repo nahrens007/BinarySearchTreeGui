@@ -56,13 +56,23 @@ void RenderArea::paintEvent(QPaintEvent * /* event */)
     this->autoSize();
 }
 
+void RenderArea::callRepaint()
+{
+    if (this->bst->isEmpty())
+        return;
+
+    this->scale += 0.1;
+    this->repaint();
+    this->scale -= 0.1;
+    this->repaint();
+}
+
 // Increment the scale variable and redraw
 void RenderArea::zoomIn() {
     if (this->bst->isEmpty())
         return;
     if(this->scale < 2.0){
         this->scale += 0.1;
-        this->autoSize();
         this->repaint();
     }
 }
@@ -73,7 +83,6 @@ void RenderArea::zoomOut() {
         return;
     if(this->scale > 0.2) {
         this->scale -= 0.1;
-        this->autoSize();
         this->repaint();
     }
 }
@@ -112,7 +121,16 @@ void RenderArea::mouseReleaseEvent(QMouseEvent *event)
 {
     switch(event->button()){
     case Qt::LeftButton:
+        if ( event->modifiers() & Qt::ControlModifier )
+        {
+            // search for a node at the provided location and delete it.
+            this->bst->deleteAtLocation(event->x(), event->y());
+            this->repaint();
+            break;
+        }
+
         this->zoomIn();
+
         break;
     case Qt::RightButton:
         this->zoomOut();

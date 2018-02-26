@@ -94,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :
     treeScrollArea->installEventFilter(renderArea);
 
     // Create the main layout and add all the widgets to it
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout = new QVBoxLayout;
     mainLayout->addWidget(treeScrollArea);
     mainLayout->addLayout(buttonLayout);
 
@@ -104,12 +104,18 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setCentralWidget(centralWidget);
     this->setMinimumHeight(400);
     this->setWindowTitle("Binary Search Tree Visualization");
-    this->showMaximized();
+    //this->showMaximized();
 
     // Create secondary windows (but do not display them)
     prop = new BST_Properties_Window();
     about = new BST_About_Window();
 
+}
+
+void MainWindow::resizeEvent(QResizeEvent* event)
+{
+   QMainWindow::resizeEvent(event);
+   this->renderArea->callRepaint();
 }
 
 MainWindow::~MainWindow()

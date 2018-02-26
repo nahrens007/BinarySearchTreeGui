@@ -25,6 +25,8 @@ public:
     void zoomIn();
     void zoomOut();
     bool eventFilter(QObject *, QEvent *event);
+    void autoSize();
+    void callRepaint();
 
 signals:
 
@@ -38,7 +40,7 @@ private:
     double scale;
     QPen pen;
     QBrush brush;
-    void autoSize();
+
 };
 
 #endif // RENDERAREA_H

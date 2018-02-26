@@ -12,6 +12,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QVBoxLayout>
 #include <QMenu>
 #include <QAction>
 #include <QLabel>
@@ -43,6 +44,7 @@ private:
     QLineEdit *insertValueLineEdit;
     QLineEdit *deleteValueLineEdit;
     QScrollArea *treeScrollArea;
+    QVBoxLayout *mainLayout;
     QLabel *statusLabel;
     QMenu *fileMenu;
     QMenu *editMenu;
@@ -60,6 +62,7 @@ private:
 
 protected:
     virtual void closeEvent(QCloseEvent *event);
+    virtual void resizeEvent(QResizeEvent* event);
 
 private slots:
     void propertyClicked() const;
