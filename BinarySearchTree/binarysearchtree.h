@@ -758,6 +758,7 @@ int BinarySearchTree<T>::getTotalX() const
 template<typename T>
 void BinarySearchTree<T>::recursiveDraw(Node<T> *node)
 {
+    // Base case
     if (node == 0)
         return;
 
