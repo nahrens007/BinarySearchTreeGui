@@ -82,11 +82,11 @@ BST_Properties_Window::BST_Properties_Window(QWidget *parent) : QMainWindow(pare
     // Create the main layout and add all the widgets to it
     mainLayout = new QVBoxLayout;
     mainLayout->addLayout(containerLayout);
-    mainLayout->addWidget(new QLabel("Preorder Traversal:"));
+    mainLayout->addWidget(new QLabel("Preorder Depthfirst Traversal:"));
     mainLayout->addWidget(preOrderTraversal);
-    mainLayout->addWidget(new QLabel("Inorder Traversal:"));
+    mainLayout->addWidget(new QLabel("Inorder Depthfirst Traversal:"));
     mainLayout->addWidget(inOrderTraversal);
-    mainLayout->addWidget(new QLabel("Postorder Traversal:"));
+    mainLayout->addWidget(new QLabel("Postorder Depthfirst Traversal:"));
     mainLayout->addWidget(postOrderTraversal);
     mainLayout->addWidget(new QLabel("Breadthfirst Traversal"));
     mainLayout->addWidget(breadthFirstTraversal);

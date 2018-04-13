@@ -109,6 +109,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Create secondary windows (but do not display them)
     prop = new BST_Properties_Window();
     about = new BST_About_Window();
+    pref = new BST_Preferences_Window();
 
 }
 
@@ -131,6 +132,7 @@ MainWindow::~MainWindow()
     delete about;
     delete bst;
     delete centralWidget;
+    delete pref;
 }
 
 void MainWindow::createMenu()
@@ -144,6 +146,7 @@ void MainWindow::createMenu()
 
     editMenu = this->menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(resetAction);
+    editMenu->addAction(prefAction);
 
     this->menuBar()->addAction(aboutAction);
 }
@@ -170,6 +173,10 @@ void MainWindow::createActions()
     resetAction->setStatusTip("Reset the BST to be empty");
     connect(resetAction, &QAction::triggered, this, &MainWindow::resetMenu);
 
+    prefAction = new QAction(tr("Preferen&ces"), this);
+    prefAction->setStatusTip("Application Preferences");
+    connect(prefAction, &QAction::triggered, this, &MainWindow::prefMenu);
+
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -190,6 +197,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
     prop->closePropertyWindow(); // close property window
     about->close(); // close about window
+    pref->close(); // close preferences window
     event->setAccepted(true); // set whether to close application or not
     return;
 }
@@ -340,6 +348,13 @@ void MainWindow::resetMenu() const
 void MainWindow::aboutMenu() const
 {
     about->show();
+    return;
+}
+
+// Slot for preferences action in menu
+void MainWindow::prefMenu() const
+{
+    pref->show();
     return;
 }
 

@@ -24,6 +24,7 @@
 #include "bst_properties_window.h"
 #include "bst_about_window.h"
 #include "binarysearchtree.h"
+#include "bst_preferences_window.h"
 
 class MainWindow : public QMainWindow
 {
@@ -53,7 +54,9 @@ private:
     QAction *saveAction;
     QAction *exitAction;
     QAction *resetAction;
+    QAction *prefAction;
     BST_Properties_Window *prop;
+    BST_Preferences_Window *pref;
     BST_About_Window *about;
     BinarySearchTree<int> *bst;
     BinarySearchTree<int> *getBST();
@@ -75,6 +78,7 @@ private slots:
     void exitMenu();
     void resetMenu() const;
     void aboutMenu() const;
+    void prefMenu() const;
 };
 
 #endif // MAINWINDOW_H
