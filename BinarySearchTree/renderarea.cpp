@@ -13,6 +13,7 @@
 #include <QPainter>
 #include <qglobal.h>
 #include <QTime>
+#include <QPen>
 
 RenderArea::RenderArea(BinarySearchTree<int> *bst, QWidget *parent) : QWidget(parent), bst(),
     scale(1.0)
@@ -23,7 +24,11 @@ RenderArea::RenderArea(BinarySearchTree<int> *bst, QWidget *parent) : QWidget(pa
     // Set background to white so that when the RenderArea is
     // saved as an image (or the RenderArea is grabbed) the
     // the background will be white
-    this->setStyleSheet("background-color: white;");
+    //this->setStyleSheet("background-color: white;");
+
+    this->nodeColor = Qt::red;
+    this->backgroundColor = Qt::white;
+    this->textColor = Qt::black;
 }
 
 
@@ -48,14 +53,53 @@ void RenderArea::paintEvent(QPaintEvent * /* event */)
     painter.setRenderHint(QPainter::Antialiasing);
 
     QBrush brush;
-    brush.setColor(Qt::red);
+    brush.setColor(this->nodeColor);
     brush.setStyle(Qt::SolidPattern);
-    painter.setBrush(brush);
+    QPen pen;
+    pen.setColor(this->textColor);
 
-    bst->draw(&painter, this->scale);
+    painter.setBrush(brush);
+    painter.setPen(pen);
+
+    this->bst->draw(&painter, this->scale);
 
     // Autosize the renderArea after the tree has been drawn.
     this->autoSize();
+}
+
+void RenderArea::changeNodeColor(QColor c)
+{
+    this->nodeColor = c;
+}
+
+void RenderArea::changeBackgroundColor(QColor c)
+{
+    // change color
+    this->backgroundColor = c;
+    QString style("background-color: ");
+    style.append(c.name());
+    style.append(";");
+    this->setStyleSheet(style);
+}
+
+void RenderArea::changeTextColor(QColor c)
+{
+    this->textColor = c;
+}
+
+QColor RenderArea::getNodeColor() const
+{
+    return this->nodeColor;
+}
+
+QColor RenderArea::getBackgroundColor() const
+{
+    return this->backgroundColor;
+}
+
+QColor RenderArea::getTextColor() const
+{
+    return this->textColor;
 }
 
 // For outside to call - makes sure that the size is set correctly for scroll areas.

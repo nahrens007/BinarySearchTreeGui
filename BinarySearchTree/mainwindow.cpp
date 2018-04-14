@@ -109,7 +109,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // Create secondary windows (but do not display them)
     prop = new BST_Properties_Window();
     about = new BST_About_Window();
-    pref = new BST_Preferences_Window();
+
+    // must show window before loading settings
+    this->show();
+    this->loadSettings();
 
 }
 
@@ -132,7 +135,6 @@ MainWindow::~MainWindow()
     delete about;
     delete bst;
     delete centralWidget;
-    delete pref;
 }
 
 void MainWindow::createMenu()
@@ -146,7 +148,9 @@ void MainWindow::createMenu()
 
     editMenu = this->menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(resetAction);
-    editMenu->addAction(prefAction);
+    editMenu->addAction(changeNodeColorAction);
+    editMenu->addAction(changeBackgroundColorAction);
+    editMenu->addAction(changeTextColorAction);
 
     this->menuBar()->addAction(aboutAction);
 }
@@ -173,9 +177,17 @@ void MainWindow::createActions()
     resetAction->setStatusTip("Reset the BST to be empty");
     connect(resetAction, &QAction::triggered, this, &MainWindow::resetMenu);
 
-    prefAction = new QAction(tr("Preferen&ces"), this);
-    prefAction->setStatusTip("Application Preferences");
-    connect(prefAction, &QAction::triggered, this, &MainWindow::prefMenu);
+    changeNodeColorAction = new QAction(tr("&Node color"), this);
+    changeNodeColorAction->setStatusTip("Change Node Color");
+    connect(changeNodeColorAction, &QAction::triggered, this, &MainWindow::changeNodeColorMenu);
+
+    changeBackgroundColorAction = new QAction(tr("&Background color"), this);
+    changeBackgroundColorAction->setStatusTip("Change Background Color");
+    connect(changeBackgroundColorAction, &QAction::triggered, this, &MainWindow::changeBackgroundColorMenu);
+
+    changeTextColorAction = new QAction(tr("Node &text color"), this);
+    changeTextColorAction->setStatusTip("Change Node Text Color");
+    connect(changeTextColorAction, &QAction::triggered, this, &MainWindow::changeTextColorMenu);
 
 }
 
@@ -194,10 +206,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
         writer.flush();
         file.close();
     }
+    this->saveSettings();
 
     prop->closePropertyWindow(); // close property window
     about->close(); // close about window
-    pref->close(); // close preferences window
     event->setAccepted(true); // set whether to close application or not
     return;
 }
@@ -351,10 +363,45 @@ void MainWindow::aboutMenu() const
     return;
 }
 
-// Slot for preferences action in menu
-void MainWindow::prefMenu() const
+// Slot for changing node color in menu
+void MainWindow::changeNodeColorMenu()
 {
-    pref->show();
+    QColor color = QColorDialog::getColor(Qt::black, this);
+    if (color.isValid())
+    {
+        // change color
+        this->renderArea->changeNodeColor(color);
+        this->renderArea->repaint();
+    }
+    return;
+}
+
+// Slot for changing background color in menu
+void MainWindow::changeBackgroundColorMenu()
+{
+    QColor color = QColorDialog::getColor(Qt::black, this);
+    if (color.isValid())
+    {
+        // change color
+        QPalette pal(this->treeScrollArea->palette());
+        pal.setColor(QPalette::Window, color);
+        this->treeScrollArea->setPalette(pal);
+        this->renderArea->changeBackgroundColor(color);
+    }
+    return;
+}
+
+
+// Slot for changing background color in menu
+void MainWindow::changeTextColorMenu()
+{
+    QColor color = QColorDialog::getColor(Qt::black, this);
+    if (color.isValid())
+    {
+        // change color
+        this->renderArea->changeTextColor(color);
+        this->renderArea->repaint();
+    }
     return;
 }
 
@@ -385,4 +432,62 @@ BinarySearchTree<int>* MainWindow::getBST()
 
     file.close();
     return bst;
+}
+
+void MainWindow::saveSettings()
+{
+    QString fileName = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/BSTVisualizer/settings.txt";
+    QString text;
+    text = "text-color:" + this->renderArea->getTextColor().name() + "\n";
+    text += "background-color:" + this->renderArea->getBackgroundColor().name() + "\n";
+    text += "node-color:" + this->renderArea->getNodeColor().name() + "\n";
+
+    QFile file(fileName);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream writer(&file);
+        writer << text;
+        writer.flush();
+        file.close();
+    }
+    return;
+}
+
+void MainWindow::loadSettings()
+{
+    QString fileName = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/BSTVisualizer/settings.txt";
+    QString text;
+    QFile file(fileName);
+
+    // If the file doesn't exist or if it can't open, return
+    if (!file.exists() || !file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        return;
+    }
+
+    QTextStream reader(&file);
+
+    while (!reader.atEnd())
+    {
+        reader >> text;
+        QStringList list = text.split(":");
+        QColor c(list.value(1));
+        if (!c.isValid()){
+            file.close();
+            return;
+        }
+        if (list.value(0) == QString("background-color")){
+            QPalette pal(this->treeScrollArea->palette());
+            pal.setColor(QPalette::Window, c);
+            this->treeScrollArea->setPalette(pal);
+            this->renderArea->changeBackgroundColor(c);
+
+        }else if (list.value(0) == QString("node-color")){
+            this->renderArea->changeNodeColor(c);
+
+        }else if (list.value(0) == QString("text-color")){
+            this->renderArea->changeTextColor(c);
+        }
+    }
+    file.close();
 }

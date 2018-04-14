@@ -13,6 +13,7 @@
 #include <QBrush>
 #include <QMouseEvent>
 #include "binarysearchtree.h"
+#include <QColor>
 
 class RenderArea : public QWidget
 {
@@ -27,6 +28,12 @@ public:
     bool eventFilter(QObject *, QEvent *event);
     void autoSize();
     void callRepaint();
+    void changeNodeColor(QColor c);
+    void changeBackgroundColor(QColor c);
+    void changeTextColor(QColor c);
+    QColor getNodeColor() const;
+    QColor getBackgroundColor() const;
+    QColor getTextColor() const;
 
 signals:
 
@@ -40,6 +47,9 @@ private:
     double scale;
     QPen pen;
     QBrush brush;
+    QColor backgroundColor;
+    QColor nodeColor;
+    QColor textColor;
 
 };
 
