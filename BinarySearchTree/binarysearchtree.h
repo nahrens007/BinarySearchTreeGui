@@ -383,10 +383,23 @@ bool BinarySearchTree<T>::deleteItem(T item)
         Node<T> *ptr = currentNode;
         trailCurrentNode = currentNode;
         ptr = ptr->leftChild;
-        if(ptr->rightChild==NULL){
-            currentNode->data=ptr->data;
-            currentNode->leftChild=NULL;
-            delete ptr;
+        if(ptr->rightChild==NULL)
+        {
+            if(ptr->leftChild==NULL)
+            {
+                currentNode->data=ptr->data;
+                currentNode->leftChild=NULL;
+                delete ptr;
+            }
+            else
+            {
+               currentNode->data=ptr->data;
+               currentNode->leftChild=ptr->leftChild;
+               ptr->leftChild->parent=currentNode;
+               delete ptr;
+
+            }
+
         }
         else
             {
