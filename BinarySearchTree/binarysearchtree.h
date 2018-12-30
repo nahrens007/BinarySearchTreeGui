@@ -375,38 +375,31 @@ bool BinarySearchTree<T>::deleteItem(T item)
         return found;
     }
 
+    //if the node has both children
+    //find the succesor of the node to be deleted, replace the value and delete the succesor
     if (currentNode->leftChild != 0 && currentNode->rightChild != 0)
     {
+        //if the leftchildren of the node we want to delete is a leaf, it means the children itself is the succesor
         Node<T> *ptr = currentNode;
         trailCurrentNode = currentNode;
-        currentNode = currentNode->leftChild;
-
-        while (currentNode->rightChild != 0)
-        {
-            trailCurrentNode = currentNode;
-            currentNode = currentNode->rightChild;
-        }
-        if (trailCurrentNode->data < item)
-        {
-            Node<T> *tempPtr = trailCurrentNode->rightChild;
-            trailCurrentNode->rightChild = currentNode->leftChild;
-            if (currentNode->leftChild != 0)
-                currentNode->leftChild->parent = trailCurrentNode;
-            delete tempPtr;
+        ptr = ptr->leftChild;
+        if(ptr->rightChild==NULL){
+            currentNode->data=ptr->data;
+            currentNode->leftChild=NULL;
+            delete ptr;
         }
         else
-        {
-            Node<T> *tempPtr = trailCurrentNode->leftChild;
-            trailCurrentNode->leftChild = currentNode->leftChild;
-            if (currentNode->leftChild != 0)
-                currentNode->leftChild->parent = trailCurrentNode;
-            delete tempPtr;
-        }
-        ptr->data = currentNode->data;
+            {
+            //else we look for the succesor in the subtree
 
-        return found;
-    }
-
+            while (ptr->rightChild!=0)
+               ptr=ptr->rightChild;
+            trailCurrentNode=ptr->parent;
+            trailCurrentNode->rightChild=NULL;
+            currentNode->data=ptr->data;
+            delete ptr;
+            }
+   }
     return found;
 }
 
